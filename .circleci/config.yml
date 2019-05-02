@@ -4,7 +4,7 @@ version: 2.1
 jobs:
   BuildAndDeploy:
     docker:
-      - image: circleci/node
+      - image: circleci/node:10.15.3-jessie-browsers-legacy
     steps:
       # - checkout
       - add_ssh_keys:
@@ -21,6 +21,7 @@ jobs:
           name: npm run deploy
           command: |
             cd ryansheehan.github.io
+            pwd
             npm install --unsafe-perm
             npm run deploy
 
