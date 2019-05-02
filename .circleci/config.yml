@@ -15,9 +15,9 @@ jobs:
           fingerprints:
             - d7:ca:83:8c:49:1a:e4:bd:13:77:93:d9:78:67:d1:32
             - 92:99:09:43:77:16:70:28:b9:e1:90:db:b6:41:37:6d
-      # - run:
-      #     name: Avoid hosts unknown for github
-      #     command: echo -e “Host github.com\n\tStrictHostKeyChecking no\n” > ~/.ssh/config
+      - run:
+          name: Keyscan Github
+          command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
       - run:
           name: Clone GitHub repository
           command: git clone --branch author --single-branch git@github.com:ryansheehan/ryansheehan.github.io.git --depth=1
