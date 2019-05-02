@@ -8,7 +8,8 @@ orbs:
 
 jobs:
   BuildAndDeploy:
-    executor: node/default
+    docker:
+      - image: node:10.15.3-alpine
     steps:
       # - checkout
       - add_ssh_keys:
@@ -21,8 +22,6 @@ jobs:
       - run:
           name: Clone GitHub repository
           command: git clone --branch author --single-branch git@github.com:ryansheehan/ryansheehan.github.io.git --depth=1
-      - node/install:
-          version: 10.15.3
       - node/install-npm
       - run:
           name: npm run deploy
@@ -30,8 +29,6 @@ jobs:
 
 # Orchestrate or schedule a set of jobs, see https://circleci.com/docs/2.0/workflows/
 workflows:
-  # Name the workflow "Welcome"
   BuildAndDeploy:
-    # Run the welcome/run job in its own container
     jobs:
       - BuildAndDeploy
