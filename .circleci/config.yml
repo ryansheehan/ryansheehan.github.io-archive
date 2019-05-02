@@ -12,20 +12,20 @@ jobs:
     steps:
       # - checkout
       - add_ssh_keys:
-        fingerprints:
-          - 92:99:09:43:77:16:70:28:b9:e1:90:db:b6:41:37:6d
+          fingerprints:
+            - 92:99:09:43:77:16:70:28:b9:e1:90:db:b6:41:37:6d
       - run:
-        name: Avoid hosts unknown for github
-        command: echo -e “Host github.com\n\tStrictHostKeyChecking no\n” > ~/.ssh/config
+          name: Avoid hosts unknown for github
+          command: echo -e “Host github.com\n\tStrictHostKeyChecking no\n” > ~/.ssh/config
       - run:
-        name: Clone GitHub repository
-        command: git clone --branch author --single-branch git@github.com:ryansheehan/ryansheehan.github.io.git --depth=1
+          name: Clone GitHub repository
+          command: git clone --branch author --single-branch git@github.com:ryansheehan/ryansheehan.github.io.git --depth=1
       - node/install:
-        version: 10.15.3
+          version: 10.15.3
       - node/install-npm
       - run:
-        name: npm run deploy
-        command: npm run deploy
+          name: npm run deploy
+          command: npm run deploy
 
 # Orchestrate or schedule a set of jobs, see https://circleci.com/docs/2.0/workflows/
 workflows:
