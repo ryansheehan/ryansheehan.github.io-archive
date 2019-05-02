@@ -23,6 +23,8 @@ jobs:
             cd ryansheehan.github.io
             pwd
             npm install --unsafe-perm
+            git config user.email rsheehan@gmail.com
+            git config user.name "CircleCI"
             npm run deploy
 
 # Orchestrate or schedule a set of jobs, see https://circleci.com/docs/2.0/workflows/
