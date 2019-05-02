@@ -1,0 +1,36 @@
+# Use the latest 2.1 version of CircleCI pipeline processing engine, see https://circleci.com/docs/2.0/configuration-reference/
+version: 2.1
+
+# Use a package of configuration called an orb, see https://circleci.com/docs/2.0/orb-intro/
+orbs:
+  # Declare a dependency on the welcome-orb
+  node: circleci/node@1.0.1
+
+jobs:
+  BuildAndDeploy:
+    executor: node/default
+    steps:
+      # - checkout
+      - add_ssh_keys:
+        fingerprints:
+          - 92:99:09:43:77:16:70:28:b9:e1:90:db:b6:41:37:6d
+      - run:
+        name: Avoid hosts unknown for github
+        command: echo -e “Host github.com\n\tStrictHostKeyChecking no\n” > ~/.ssh/config
+      - run:
+        name: Clone GitHub repository
+        command: git clone --branch author --single-branch git@github.com:ryansheehan/ryansheehan.github.io.git --depth=1
+      - node/install:
+        version: 10.15.3
+      - node/install-npm
+      - run:
+        name: npm run deploy
+        command: npm run deploy
+
+# Orchestrate or schedule a set of jobs, see https://circleci.com/docs/2.0/workflows/
+workflows:
+  # Name the workflow "Welcome"
+  BuildAndDeploy:
+    # Run the welcome/run job in its own container
+    jobs:
+      - BuildAndDeploy
