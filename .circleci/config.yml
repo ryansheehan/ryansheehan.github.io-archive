@@ -21,7 +21,7 @@ jobs:
           name: npm run deploy
           command: |
             cd ryansheehan.github.io
-            npm install
+            npm install --unsafe-perm
             npm run deploy
 
 # Orchestrate or schedule a set of jobs, see https://circleci.com/docs/2.0/workflows/
