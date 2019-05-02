@@ -9,7 +9,7 @@ orbs:
 jobs:
   BuildAndDeploy:
     docker:
-      - image: node:10.15.3-alpine
+      - image: circleci/node
     steps:
       # - checkout
       - add_ssh_keys:
