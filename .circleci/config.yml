@@ -27,9 +27,18 @@ jobs:
             npm run deploy
 workflows:
   version: 2
-  author_deploy:
+  commit:
     jobs:
       - deploy:
           filters:
             branches:
               only: author
+  weekly:
+    triggers:
+      - schedule:
+          cron: "0 5 * * 3" # every wednesday at 5am https://crontab.guru/
+          filters:
+            branches:
+              only: author
+    jobs:
+      - deploy
