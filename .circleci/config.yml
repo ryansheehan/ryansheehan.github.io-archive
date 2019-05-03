@@ -25,14 +25,11 @@ jobs:
             git config user.email rsheehan@gmail.com
             git config user.name "CircleCI"
             npm run deploy
-
-# Orchestrate or schedule a set of jobs, see https://circleci.com/docs/2.0/workflows/
 workflows:
-  version: 2.0
-  build_and_deploy:
+  version: 2
+  author_deploy:
     jobs:
-      - deploy
+      - deploy:
           filters:
             branches:
-              only:
-                - author
+              only: author
