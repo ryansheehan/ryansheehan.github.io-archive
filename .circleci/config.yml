@@ -24,7 +24,7 @@ jobs:
             npm install --unsafe-perm
             git config user.email rsheehan@gmail.com
             git config user.name "CircleCI"
-            npm run deploy -- --message "publishing latest posts [ci skip]"
+            npm run deploy -- -m "publishing latest posts [ci skip]"
 workflows:
   version: 2
   commit:
