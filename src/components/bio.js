@@ -10,6 +10,7 @@ import { StaticQuery, graphql } from "gatsby"
 import Image from "gatsby-image"
 
 import { rhythm } from "../utils/typography"
+import {isDevelopment} from '../../environment';
 
 function Bio() {
   return (
@@ -40,11 +41,17 @@ function Bio() {
                 borderRadius: `50%`,
               }}
             />
-            <p>
-              <strong>{author}</strong> is a developer who loves to play with new technologies.
-              {` `}
-              Samples of his tinkering are <a href={`https://github.com/${social.github}`}>found on Github</a>
-            </p>
+            <div>
+              {isDevelopment ? <div style={{
+                color: 'red',
+                fontSize: '0.7em'
+              }}>Development Mode </div> : ''}
+              <p>
+                <strong>{author}</strong> is a developer who loves to play with new technologies.
+                {` `}
+                Samples of his tinkering are <a href={`https://github.com/${social.github}`}>found on Github</a>
+              </p>
+            </div>
           </div>
         )
       }}

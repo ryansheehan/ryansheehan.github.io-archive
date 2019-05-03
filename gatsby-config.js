@@ -1,3 +1,5 @@
+const {isDevelopment} = require('./environment');
+
 module.exports = {
   siteMetadata: {
     title: `Ryshe Blog`,
@@ -46,7 +48,7 @@ module.exports = {
               active : true,
               // Add a custom css class
               class  : 'emoji-icon',
-              // Select the size (available size: 16, 24, 32, 64)
+              // Select the size (available size: 16Your Site's RSS Feed, 24, 32, 64)
               size   : 64,
               // Add custom styles
               styles : {
@@ -84,7 +86,7 @@ module.exports = {
               aliases: {},
               // This toggles the display of line numbers globally alongside the code.
               // To use it, add the following line in src/layouts/index.js
-              // right after importing the prism color scheme:
+              // right after importing the prism color schprocess.env.NODE_ENV !== 'production'eme:
               //  `require("prismjs/plugins/line-numbers/prism-line-numbers.css");`
               // Defaults to false.
               // If you wish to only show line numbers on certain code blocks,
@@ -101,7 +103,12 @@ module.exports = {
         ],
       },
     },
-    'gatsby-plugin-draft',
+    {
+      resolve: 'gatsby-plugin-draft',
+      options: {
+        publishDraft: isDevelopment,
+      }
+    },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {
@@ -110,7 +117,60 @@ module.exports = {
         //trackingId: `ADD YOUR TRACKING ID HERE`,
       },
     },
-    `gatsby-plugin-feed`,
+    {
+      resolve: `gatsby-plugin-feed`,
+      options: {
+        query: `
+          {
+            site {
+              siteMetadata {
+                title
+                description
+                siteUrl
+                site_url: siteUrl
+              }
+            }
+          }
+        `,
+        feeds: [
+          {
+            serialize: ({ query: { site, allMarkdownRemark } }) => {
+              return allMarkdownRemark.edges.map(edge => {
+                return Object.assign({}, edge.node.frontmatter, {
+                  description: edge.node.excerpt,
+                  date: edge.node.frontmatter.date,
+                  url: site.siteMetadata.siteUrl + edge.node.fields.slug,
+                  guid: site.siteMetadata.siteUrl + edge.node.fields.slug,
+                  custom_elements: [{ "content:encoded": edge.node.html }],
+                })
+              })
+            },
+            query: `
+              {
+                allMarkdownRemark(
+                  sort: { order: DESC, fields: [frontmatter___date] }
+                  filter: { fields: { draft: { eq: false } } }
+                ) {
+                  edges {
+                    node {
+                      excerpt
+                      html
+                      fields { slug }
+                      frontmatter {
+                        title
+                        date
+                      }
+                    }
+                  }
+                }
+              }
+            `,
+            output: "/rss.xml",
+            title: "RyShe Blog",
+          },
+        ],
+      },
+    },
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
