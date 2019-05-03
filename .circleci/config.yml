@@ -5,7 +5,7 @@ jobs:
   BuildAndDeploy:
     docker:
       - image: circleci/node:10.15.3-jessie-browsers-legacy
-    branch:
+    branches:
       only:
         - author
     steps:
