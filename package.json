@@ -16,7 +16,8 @@
     "serve": "gatsby serve",
     "reserve": "run-s rebuild serve",
     "clean:cache": "rimraf .cache",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\"",
+    "gh-pages": "gh-pages"
   },
   "dependencies": {
     "gatsby": "^2.4.2",
