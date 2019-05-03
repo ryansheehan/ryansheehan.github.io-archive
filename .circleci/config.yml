@@ -5,6 +5,9 @@ jobs:
   BuildAndDeploy:
     docker:
       - image: circleci/node:10.15.3-jessie-browsers-legacy
+    branch:
+      only:
+        - author
     steps:
       # - checkout
       - add_ssh_keys:
