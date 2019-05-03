@@ -77,7 +77,7 @@ function resolveArguments(templateName, postTitle, args = []) {
     }
   }
 
-  const slug = slugify(postTitle);
+  const slug = slugify(postTitle).toLowerCase();
   const overrides = [];
 
   // take the variable arguments and mash them up into a single nested object
@@ -122,6 +122,7 @@ async function createPost(filePath, template, rawTitle, overrides) {
     {
       title,
       date: (new Date()).toISOString(),
+      draft: true,
       description: `${title} description`,
       ...template,
     },
