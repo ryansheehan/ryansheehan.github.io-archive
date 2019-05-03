@@ -29,10 +29,9 @@ jobs:
 
 # Orchestrate or schedule a set of jobs, see https://circleci.com/docs/2.0/workflows/
 workflows:
-  version: 2
   build_and_deploy:
+    filters:
+        branches:
+          only: author
     jobs:
       - BuildAndDeploy
-          filters:
-            branches:
-              only: author
