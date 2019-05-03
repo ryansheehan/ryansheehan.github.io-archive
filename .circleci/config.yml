@@ -32,6 +32,7 @@ workflows:
   BuildAndDeploy:
     jobs:
       - BuildAndDeploy
-          branches:
-            only:
-              - author
+          filters:
+            branches:
+              only:
+                - author
