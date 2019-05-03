@@ -3,9 +3,6 @@ version: 2.1
 
 jobs:
   BuildAndDeploy:
-    branches:
-      only:
-        - author
     docker:
       - image: circleci/node:10.15.3-jessie-browsers-legacy
     steps:
@@ -35,3 +32,6 @@ workflows:
   BuildAndDeploy:
     jobs:
       - BuildAndDeploy
+          branches:
+            only:
+              - author
