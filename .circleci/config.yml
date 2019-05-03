@@ -33,6 +33,7 @@ workflows:
           filters:
             branches:
               only: author
+              ignore: master
   weekly:
     triggers:
       - schedule:
