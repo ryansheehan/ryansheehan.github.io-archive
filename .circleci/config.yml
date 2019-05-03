@@ -32,7 +32,7 @@ workflows:
       - deploy:
           filters:
             branches:
-              only: author
+              # only: author
               ignore: master
   weekly:
     triggers:
