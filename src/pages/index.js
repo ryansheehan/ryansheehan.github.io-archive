@@ -9,17 +9,19 @@ import { rhythm } from "../utils/typography"
 class BlogIndex extends React.Component {
   render() {
     const { data } = this.props
-    const siteTitle = data.site.siteMetadata.title
-    const posts = data.allMarkdownRemark.edges
+    const {site, posts, projects} = data;
+    const siteTitle = site.siteMetadata.title
+
 
     return (
       <Layout location={this.props.location} title={siteTitle}>
         <SEO
           title="All posts"
-          keywords={[`blog`, `gatsby`, `javascript`, `react`]}
+          keywords={[`blog`, `gatsby`, `javascript`, `react`, `software engineering`, `software development`]}
         />
         <Bio />
-        {posts.map(({ node }) => {
+        <h2>Latest Posts</h2>
+        {posts.edges.map(({ node }) => {
           const title = node.frontmatter.title || node.fields.slug
           return (
             <div key={node.fields.slug}>
@@ -41,6 +43,10 @@ class BlogIndex extends React.Component {
             </div>
           )
         })}
+        <h2>Projects</h2>
+        <ul>
+          {projects.edges.map(({node}) => <li>{node.frontmatter.title}</li>)}
+        </ul>
       </Layout>
     )
   }
@@ -49,29 +55,57 @@ class BlogIndex extends React.Component {
 export default BlogIndex
 
 export const pageQuery = graphql`
-  query {
-    site {
-      siteMetadata {
-        title
+query {
+  site {
+    siteMetadata {
+      title
+    }
+  }
+  posts: allMarkdownRemark(
+    sort: { fields: [frontmatter___date], order: DESC }
+    filter: {
+      fields: {
+        draft: { eq: false }
+        isProjectSummary: { eq: false }
       }
     }
-    allMarkdownRemark(
-      sort: { fields: [frontmatter___date], order: DESC }
-      filter: { fields: { draft: { eq: false } } }
-    ) {
-      edges {
-        node {
-          excerpt
-          fields {
-            slug
-          }
-          frontmatter {
-            date(formatString: "MMMM DD, YYYY")
-            title
-            description
-          }
+    limit: 3
+  ) {
+    edges {
+      node {
+        excerpt
+        fields {
+          slug
+        }
+        frontmatter {
+          date(formatString: "MMMM DD, YYYY")
+          title
+          description
         }
       }
     }
   }
+  projects: allMarkdownRemark(
+    sort: { fields: [frontmatter___title], order: DESC }
+    filter: {
+      fields: {
+        isProjectSummary: { eq: true }
+      }
+    }
+  ) {
+    edges {
+      node {
+        excerpt
+        fields {
+          slug
+        }
+        frontmatter {
+          date(formatString: "MMMM DD, YYYY")
+          title
+          description
+        }
+      }
+    }
+  }
+}
 `

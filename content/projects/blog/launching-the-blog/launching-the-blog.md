@@ -2,6 +2,7 @@
 title: Launching the Blog
 date: '2019-05-01T23:46:33.027Z'
 description: This is the inaugural post to kick off my personal site
+draft: false
 ---
 
 ## Motivation
