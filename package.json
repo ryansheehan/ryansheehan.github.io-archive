@@ -10,7 +10,7 @@
     "deploy": "run-s clean:cache build deploy:github",
     "deploy:github": "gh-pages -d public -b master -m \"publishing posts [ci skip]\"",
     "develop": "gatsby develop",
-    "newpost": "node post-generator.js",
+    "new": "node post-generator.js",
     "format": "prettier --write src/**/*.{js,jsx}",
     "start": "run-s clean:cache develop",
     "serve": "gatsby serve",

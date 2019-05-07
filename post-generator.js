@@ -23,11 +23,14 @@ if (inputArgs.length == 0 || inputArgs.some(v => v === '--help' || v === '-h')) 
   console.log(`post-generator.js
 Generates a new blog post based on title
 
-node post-generate.js <title> [template] [<key> <value> ...]
+node post-generate.js <project/post> [project-slug] <title> [--template <name>] [<key> <value> ...]
 
 Arguments:
 
-  title:
+  project/post:
+    Defining a new project or post
+
+  post:
     Quoted string for the blog title.  A single word title require no quotes.
 
   template:
@@ -44,14 +47,47 @@ Arguments:
   return 0;
 }
 
-// parse out inputs
-const [postTitle, templateName, ...args] = inputArgs;
+// parse out project template
+const templateIndex = inputArgs.findIndex(value => value === '--template');
+let templateName = '';
+let templateFile = '';
+if (templateIndex > -1) {
+  templateName = inputArgs[templateIndex+1];
+  templateFile = `${templateName}.frontmatter.js`
+  inputArgs.splice(templateIndex, 2);
+}
+
+const [newType, ...restArgs] = inputArgs;
+
+let projectName = '';
+let projectSlug = '';
+let postName = '';
+let postSlug = '';
+let args = [];
+
+switch(newType.toLowerCase()) {
+  case 'project':
+  [projectName, ...args] = restArgs;
+  projectSlug = slugify(projectName.toLowerCase());
+  break;
+  case 'post':
+  [projectSlug, postName, ...args] = restArgs;
+  postSlug = slugify(postName.toLowerCase());
+  break;
+  default:
+  console.error(`"${newType}" is not a valid new type.`);
+  return 1;
+}
 
 // hard-coded posts directory
-const postRootDirectory = path.resolve(__dirname, 'content', 'blog');
+const contentRootDirectory = path.resolve(__dirname, 'content');
 
 // formateTitle tries to intelligently capitalize the words of the title
 function formatTitle(rawTitle) {
+  if (!rawTitle) {
+    return '';
+  }
+
   const capitalize = w => w.charAt(0).toUpperCase() + w.slice(1);
   const skipWords = new Set('a an the for and nor but or yet so by from of on to with without at'.split(' '));
   return rawTitle.split(' ')
@@ -65,20 +101,38 @@ function formatTitle(rawTitle) {
   }).join(' ');
 }
 
-// converts the script arguments into something usable
-function resolveArguments(templateName, postTitle, args = []) {
-  let template = {};
+const projectTitle = formatTitle(projectName);
+const postTitle = !!projectName ? '' : formatTitle(postName);
 
-  if (templateName) {
-    const templateFile = path.resolve(__dirname, `${templateName}.frontmatter.js`);
-    console.log(templateFile);
-    if (fs.existsSync(templateFile)) {
-      template = require(templateFile);
+console.log(`
+Generating with parameters:
+  Type: ${newType}
+  Project Name: ${projectName}
+  Project Title: ${projectTitle}
+  Project Slug: ${projectSlug}
+  Post Name: ${postName}
+  Post Title: ${postTitle}
+  Post Slug: ${postSlug}
+  Template: ${templateName}
+  Template File: ${templateFile}
+  Content Root: ${contentRootDirectory}
+  Args: ${JSON.stringify(args)}
+`);
+
+// converts the script arguments into something usable
+function resolveTemplateAndArguments(templateFile, args) {
+  let template = [];
+
+  if (templateFile) {
+    const templateFilePath = path.resolve(__dirname, templateFile);
+    if (fs.existsSync(templateFilePath)) {
+      template = [require(templateFilePath)];
+    } else if(!!templateFile) {
+      console.warn(`Template file "${templateFilePath}" not found.`);
     }
   }
 
-  const slug = slugify(postTitle).toLowerCase();
-  const overrides = [];
+  const overrides = [...template];
 
   // take the variable arguments and mash them up into a single nested object
   for(let k=0, v=1; k < args.length; k += 2, v += 2) {
@@ -94,41 +148,15 @@ function resolveArguments(templateName, postTitle, args = []) {
     overrides.push(valueObject);
   }
 
-  return {
-    template,
-    slug,
-    overrides: deepmerge.all(overrides)
-  }
+  return deepmerge.all(overrides);
 }
 
-// creates the directory, or throws if already exists
-async function createPostDirectory(postRoot, slug) {
-  const postdir = path.join(postRoot, slug);
-
-  if(fs.existsSync(postdir)) {
-    throw new Error(`Post "${slug}" already exists in "${postRoot}".`);
-  }
-
-  await mkdir(postdir);
-
-  return postdir;
+function createBasicMetadata(title, project) {
+  return {title, date: (new Date()).toISOString(), description: `${title} description`, project };
 }
 
 // create the initial markdown file, complete with frontmatter
-async function createPost(filePath, template, rawTitle, overrides) {
-  const title = formatTitle(rawTitle);
-
-  const frontmatter = deepmerge(
-    {
-      title,
-      date: (new Date()).toISOString(),
-      draft: true,
-      description: `${title} description`,
-      ...template,
-    },
-    overrides
-  );
-
+async function createMarkdown(filePath, frontmatter) {
   const contents =
 `---
 ${yaml.safeDump(frontmatter)}---
@@ -138,18 +166,61 @@ ${yaml.safeDump(frontmatter)}---
   await writeFile(filePath, contents);
 }
 
-// main function
-async function processNewPost(postRoot, templateName, postTitle, args = []) {
-  const {template, slug, overrides} = resolveArguments(templateName, postTitle, args);
-  const postdir = await createPostDirectory(postRoot, slug);
-  const postFilePath = path.resolve(postdir, `${slug}.md`);
-  await createPost(postFilePath, template, postTitle, overrides);
-  console.log(`'${postTitle}' is ready to edit at "${postFilePath}"`);
+async function createProject(contentRoot, slug, title, metadata) {
+  const projectDir = path.join(contentRoot, slug);
+
+  if (fs.existsSync(projectDir)) {
+    console.log(`Project "${slug}" exists at ${projectDir}`);
+    return projectDir;
+  }
+
+  await mkdir(projectDir);
+
+  const defaultMetadata = createBasicMetadata(title, slug);
+  const additionalMetadata = metadata;
+
+  const projectMetadata = deepmerge(defaultMetadata, additionalMetadata);
+  const projectFile = path.join(projectDir, '_index.md');
+
+  await createMarkdown(projectFile, projectMetadata);
+
+  return projectFile;
+}
+
+async function createPost(contentRoot, projectSlug, slug, title, metadata) {
+  const projectDir = path.join(contentRoot, projectSlug);
+
+  if (!fs.existsSync(projectDir)) {
+    console.error(`Project slug "${projectSlug}" does not exist.  Please create project first.`);
+    return 1;
+  }
+
+  const postDir = path.join(projectDir, slug);
+  await mkdir(postDir);
+
+  const postMetadata = deepmerge.all([{draft: true}, createBasicMetadata(title, slug), metadata]);
+  const postPath = path.join(postDir, slug);
+
+  await createMarkdown(postPath, postMetadata);
+
+  return postPath;
 }
 
 // call the main function
 try {
-  processNewPost(postRootDirectory, templateName, postTitle, args)
+  const addedMetadata = resolveTemplateAndArguments(templateFile, args);
+  switch(newType) {
+    case 'project':
+    createProject(contentRootDirectory, projectSlug, projectTitle, addedMetadata).then(path => {
+      console.log(`Project file created at ${path}`);
+    });
+    break;
+    case 'post':
+    createPost(contentRootDirectory, projectSlug, postSlug, postTitle, addedMetadata).then(path => {
+      console.log(`Post file created at ${path}`);
+    });
+    break;
+  }
 } catch (err) {
   console.error(`${err}`);
   return 1;
