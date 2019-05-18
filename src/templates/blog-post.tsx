@@ -1,12 +1,24 @@
 import React from "react"
-import { Link, graphql } from "gatsby"
+import { Link, graphql, ReplaceComponentRendererArgs, PageRendererProps } from "gatsby"
 
-import Bio from "../components/bio"
-import Layout from "../components/layout"
-import SEO from "../components/seo"
+import Bio from "../components/bio/bio"
+import Layout from "../components/layout/layout"
+import SEO from "../components/seo/seo"
 import { rhythm, scale } from "../utils/typography"
+import { IMarkdownRemark } from '../interfaces/markdownRemark.interface';
+import { IPageQuery } from '../interfaces/page-query.interface';
+import { IBlogPostPageContext } from '../interfaces/blog-post.interface';
 
-class BlogPostTemplate extends React.Component {
+interface Data extends IPageQuery {
+  markdownRemark: IMarkdownRemark;
+}
+
+type BlogPostTemplateProps = {data: Data}
+  & ReplaceComponentRendererArgs
+  & {pageContext: IBlogPostPageContext}
+  & PageRendererProps
+
+class BlogPostTemplate extends React.Component<BlogPostTemplateProps> {
   render() {
     const post = this.props.data.markdownRemark
     const siteTitle = this.props.data.site.siteMetadata.title

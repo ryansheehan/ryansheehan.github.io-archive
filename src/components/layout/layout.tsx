@@ -1,9 +1,14 @@
 import React from "react"
 import { Link } from "gatsby"
 
-import { rhythm, scale } from "../utils/typography"
+import { rhythm, scale } from "../../utils/typography"
 
-class Layout extends React.Component {
+export interface LayoutProps {
+  location: Location;
+  title: string;
+}
+
+class Layout extends React.Component<LayoutProps> {
   render() {
     const { location, title, children } = this.props
     const rootPath = `${__PATH_PREFIX__}/`
@@ -62,7 +67,11 @@ class Layout extends React.Component {
       >
         <header>{header}</header>
         <main>{children}</main>
-        <footer>© {new Date().getFullYear()} Ryan Sheehan.  All rights reserved.</footer>
+        <footer>
+          © {new Date().getFullYear()}, Built with
+          {` `}
+          <a href="https://www.gatsbyjs.org">Gatsby</a>
+        </footer>
       </div>
     )
   }

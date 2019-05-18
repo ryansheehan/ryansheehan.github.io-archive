@@ -2,123 +2,77 @@ const {isDevelopment} = require('./environment');
 
 module.exports = {
   siteMetadata: {
-    title: `Ryshe Blog`,
-    author: `Ryan Sheehan`,
-    description: `A starter blog demonstrating what Gatsby can do.`,
-    siteUrl: `https://ryansheehan.github.io/`,
+    title: 'Ryan Sheehan',
+    author: 'Ryan Sheehan',
+    description: 'A place for my musings',
+    siteUrl: 'https://ryansheehan.github.io/',
+    email: 'rsheehan@gmail.com',
     social: {
-      github: `ryansheehan`,
+      twitter: '',
+      github: 'ryansheehan',
     },
   },
   plugins: [
+    'gatsby-plugin-typescript',
+    'gatsby-transformer-typescript-css-modules',
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: 'gatsby-source-filesystem',
       options: {
-        path: `${__dirname}/content/projects`,
-        name: `projects`,
+        path: `${__dirname}/content/series`,
+        name: 'series',
       },
     },
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: 'gatsby-source-filesystem',
       options: {
         path: `${__dirname}/content/assets`,
-        name: `assets`,
+        name: 'assets',
       },
     },
     {
-      resolve: `gatsby-transformer-remark`,
+      resolve: 'gatsby-transformer-remark',
       options: {
         plugins: [
           {
-            resolve: `gatsby-remark-images`,
+            resolve: 'gatsby-remark-images',
             options: {
               maxWidth: 590,
             },
           },
           {
-            resolve: `gatsby-remark-responsive-iframe`,
+            resolve: 'gatsby-remark-responsive-iframe',
             options: {
-              wrapperStyle: `margin-bottom: 1.0725rem`,
+              wrapperStyle: 'margin-bottom: 1.0725rem',
             },
           },
-          {
-            resolve: 'gatsby-remark-emojis',
-            options: {
-              // Deactivate the plugin globally (default: true)
-              active : true,
-              // Add a custom css class
-              class  : 'emoji-icon',
-              // Select the size (available size: 16Your Site's RSS Feed, 24, 32, 64)
-              size   : 64,
-              // Add custom styles
-              styles : {
-                display      : 'inline',
-                margin       : '0',
-                'margin-top' : '1px',
-                position     : 'relative',
-                top          : '5px',
-                width        : '25px'
-              }
-            }
-          },
-          {
-            resolve: `gatsby-remark-prismjs`,
-            options: {
-              // Class prefix for <pre> tags containing syntax highlighting;
-              // defaults to 'language-' (eg <pre class="language-js">).
-              // If your site loads Prism into the browser at runtime,
-              // (eg for use with libraries like react-live),
-              // you may use this to prevent Prism from re-processing syntax.
-              // This is an uncommon use-case though;
-              // If you're unsure, it's best to use the default value.
-              classPrefix: "language-",
-              // This is used to allow setting a language for inline code
-              // (i.e. single backticks) by creating a separator.
-              // This separator is a string and will do no white-space
-              // stripping.
-              // A suggested value for English speakers is the non-ascii
-              // character '›'.
-              inlineCodeMarker: null,
-              // This lets you set up language aliases.  For example,
-              // setting this to '{ sh: "bash" }' will let you use
-              // the language "sh" which will highlight using the
-              // bash highlighter.
-              aliases: {},
-              // This toggles the display of line numbers globally alongside the code.
-              // To use it, add the following line in src/layouts/index.js
-              // right after importing the prism color schprocess.env.NODE_ENV !== 'production'eme:
-              //  `require("prismjs/plugins/line-numbers/prism-line-numbers.css");`
-              // Defaults to false.
-              // If you wish to only show line numbers on certain code blocks,
-              // leave false and use the {numberLines: true} syntax below
-              showLineNumbers: false,
-              // If setting this to true, the parser won't handle and highlight inline
-              // code used in markdown i.e. single backtick code like `this`.
-              noInlineHighlight: false,
-            },
-          },
-          `gatsby-remark-copy-linked-files`,
-          `gatsby-remark-smartypants`,
-          `gatsby-remark-component`
+          'gatsby-remark-prismjs',
+          'gatsby-remark-copy-linked-files',
+          'gatsby-remark-smartypants',
         ],
       },
     },
+    'gatsby-transformer-sharp',
     {
       resolve: 'gatsby-plugin-draft',
       options: {
         publishDraft: isDevelopment,
       }
     },
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
     {
-      resolve: `gatsby-plugin-google-analytics`,
+      resolve: 'gatsby-plugin-sharp',
       options: {
-        //trackingId: `ADD YOUR TRACKING ID HERE`,
+        useMozJpeg: !isDevelopment,
+        stripMetadata: true
+      }
+    },
+    {
+      resolve: 'gatsby-plugin-google-analytics',
+      options: {
+        //trackingId: 'ADD YOUR TRACKING ID HERE',
       },
     },
     {
-      resolve: `gatsby-plugin-feed`,
+      resolve: 'gatsby-plugin-feed',
       options: {
         query: `
           {
@@ -166,30 +120,31 @@ module.exports = {
               }
             `,
             output: "/rss.xml",
-            title: "RyShe Blog",
+            title: "Ryan Sheehan",
           },
         ],
       },
     },
     {
-      resolve: `gatsby-plugin-manifest`,
+      resolve: 'gatsby-plugin-manifest',
       options: {
-        name: `Ryshe Blog`,
-        short_name: `Ryshe`,
-        start_url: `/`,
-        background_color: `#ffffff`,
-        theme_color: `#663399`,
-        display: `minimal-ui`,
-        icon: `content/assets/favicon-32x32.png`,
+        name: 'Ryshe Blog',
+        short_name: 'Ryshe',
+        start_url: '/',
+        background_color: '#ffffff',
+        theme_color: '#663399',
+        display: 'minimal-ui',
+        icon: 'content/assets/gatsby-icon.png',
       },
     },
-    `gatsby-plugin-offline`,
-    `gatsby-plugin-react-helmet`,
+    'gatsby-plugin-offline',
+    'gatsby-plugin-react-helmet',
     {
-      resolve: `gatsby-plugin-typography`,
+      resolve: 'gatsby-plugin-typography',
       options: {
-        pathToConfigModule: `src/utils/typography`,
+        pathToConfigModule: 'src/utils/typography',
       },
     },
+    'gatsby-plugin-sass'
   ],
 }

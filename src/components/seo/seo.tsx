@@ -6,11 +6,21 @@
  */
 
 import React from "react"
-import PropTypes from "prop-types"
 import Helmet from "react-helmet"
 import { useStaticQuery, graphql } from "gatsby"
+import { IPageQuery } from '../../interfaces/page-query.interface';
 
-function SEO({ description, lang, meta, keywords, title }) {
+export type Meta = {name: string; content: string;} | {property: string; content: string;}
+
+export interface SEOProps {
+  description?: string;
+  lang?: string;
+  meta?: Meta[];
+  keywords?: string[];
+  title: string;
+}
+
+const SEO: React.FunctionComponent<SEOProps> = ({ description='', lang='en', meta=[], keywords=[], title }) => {
   const { site } = useStaticQuery(
     graphql`
       query {
@@ -23,7 +33,7 @@ function SEO({ description, lang, meta, keywords, title }) {
         }
       }
     `
-  )
+  ) as IPageQuery;
 
   const metaDescription = description || site.siteMetadata.description
 
@@ -51,22 +61,22 @@ function SEO({ description, lang, meta, keywords, title }) {
           property: `og:type`,
           content: `website`,
         },
-        // {
-        //   name: `twitter:card`,
-        //   content: `summary`,
-        // },
-        // {
-        //   name: `twitter:creator`,
-        //   content: site.siteMetadata.author,
-        // },
-        // {
-        //   name: `twitter:title`,
-        //   content: title,
-        // },
-        // {
-        //   name: `twitter:description`,
-        //   content: metaDescription,
-        // },
+        {
+          name: `twitter:card`,
+          content: `summary`,
+        },
+        {
+          name: `twitter:creator`,
+          content: site.siteMetadata.author,
+        },
+        {
+          name: `twitter:title`,
+          content: title,
+        },
+        {
+          name: `twitter:description`,
+          content: metaDescription,
+        },
       ]
         .concat(
           keywords.length > 0
@@ -81,19 +91,12 @@ function SEO({ description, lang, meta, keywords, title }) {
   )
 }
 
-SEO.defaultProps = {
-  lang: `en`,
-  meta: [],
-  keywords: [],
-  description: ``,
-}
-
-SEO.propTypes = {
-  description: PropTypes.string,
-  lang: PropTypes.string,
-  meta: PropTypes.arrayOf(PropTypes.object),
-  keywords: PropTypes.arrayOf(PropTypes.string),
-  title: PropTypes.string.isRequired,
-}
+// SEO.propTypes = {
+//   description: PropTypes.string,
+//   lang: PropTypes.string,
+//   meta: PropTypes.arrayOf(PropTypes.object),
+//   keywords: PropTypes.arrayOf(PropTypes.string),
+//   title: PropTypes.string.isRequired,
+// }
 
 export default SEO

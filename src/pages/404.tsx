@@ -1,13 +1,15 @@
 import React from "react"
 import { graphql } from "gatsby"
 
-import Layout from "../components/layout"
-import SEO from "../components/seo"
+import Layout from "../components/layout/layout"
+import SEO from "../components/seo/seo"
+import { PageProps } from '../interfaces/page-props.interface';
 
-class NotFoundPage extends React.Component {
+
+class NotFoundPage extends React.Component<PageProps> {
   render() {
     const { data } = this.props
-    const siteTitle = data.site.siteMetadata.title
+    const siteTitle = data.site.siteMetadata.title;
 
     return (
       <Layout location={this.props.location} title={siteTitle}>

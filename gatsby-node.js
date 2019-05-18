@@ -1,13 +1,13 @@
-const path = require(`path`)
+const path = require('path');
+const fs = require('fs');
+// const { createFilePath } = require('gatsby-source-filesystem');
 const slugify = require('slugify');
-// const { createFilePath } = require(`gatsby-source-filesystem`)
 
-exports.createPages = ({ graphql, actions }) => {
-  const { createPage } = actions
+exports.createPages = async ({ graphql, actions }) => {
+  const { createPage } = actions;
 
-  const blogPost = path.resolve(`./src/templates/blog-post.js`);
-  const projectPost = path.resolve(`./src/templates/project-posts.js`);
-  return graphql(
+  const timeline = path.resolve(`./src/templates/blog-post.tsx`);
+  const {data, errors} = await graphql(
     `
       {
         allMarkdownRemark(
@@ -19,8 +19,7 @@ exports.createPages = ({ graphql, actions }) => {
             node {
               fields {
                 slug
-                project
-                isProjectSummary
+                series
               }
               frontmatter {
                 title
@@ -30,120 +29,89 @@ exports.createPages = ({ graphql, actions }) => {
         }
       }
     `
-  ).then(result => {
-    if (result.errors) {
-      throw result.errors
+  );
+
+  if (errors) {
+    throw errors;
+  }
+
+  // Create blog posts pages.
+  const {edges: posts} = data.allMarkdownRemark;
+
+  // group posts by series, and collect series header-posts
+  const {seriesList, ...collections} = posts.reduce((seriesDict, post) => {
+    const {series} = post.node.fields;
+    if (series) {
+      if (series in seriesDict) {
+        seriesDict[series].push(post);
+      } else {
+        seriesDict[series] = [post];
+      }
+    } else {
+      seriesDict.seriesList.push(post);
     }
 
-    // Create blog posts pages.
-    const posts = result.data.allMarkdownRemark.edges
+    return seriesDict;
+  }, {seriesList: []});
 
-    // posts.filter(post => !post.node.fields.isProjectSummary).forEach((post, index) => {
-    //   const previous = index === posts.length - 1 ? null : posts[index + 1].node;
-    //   const next = index === 0 ? null : posts[index - 1].node;
-
-    //   createPage({
-    //     path: post.node.fields.slug,
-    //     component: blogPost,
-    //     context: {
-    //       slug: post.node.fields.slug,
-    //       previous,
-    //       next,
-    //     },
-    //   });
-    // });
-
-    const projects = posts.reduce((collection, post) => {
-      const {isProjectSummary, project} = post.node.fields;
-
-      if (project in collection) {
-        if (isProjectSummary) {
-          collection[project].summary = post;
-        } else {
-          collection[project].posts.push(post);
-        }
-      } else {
-        const projectMeta = {posts: [], summary: undefined};
-        if (isProjectSummary) {
-          projectMeta.summary = post;
-        } else {
-          projectMeta.posts.push(post);
-        }
-        collection[project] = projectMeta;
-      }
-
-      return collection;
-    }, {});
-
-    Object.keys(projects).sort().forEach((key, pIndex, projectKeys) => {
-      const project = projects[key];
-      const {posts} = project;
-      const previousProject = pIndex === projectKeys.length - 1 ? null : projects[projectKeys[pIndex + 1]].node;
-      const nextProject = pIndex === 0 ? null : projects[projectKeys[pIndex - 1]].node
-
-      posts.forEach((post, index) => {
-        const previous = index === posts.length - 1 ? null : posts[index + 1].node;
-        const next = index === 0 ? null : posts[index - 1].node;
-
-        createPage({
-          path: post.node.fields.slug,
-          component: blogPost,
-          context: {
-            slug: post.node.fields.slug,
-            previous,
-            next,
-          },
-        });
-      });
+  // Create post pages
+  Object.values(collections).forEach(collection =>
+    collection.forEach((post, index, posts) => {
+      const previous = index === posts.length - 1 ? null : posts[index + 1].node;
+      const next = index === 0 ? null : posts[index - 1].node;
+      const { slug } = post.node.fields;
 
       createPage({
-        path: project.summary.node.fields.slug,
-        component: projectPost,
-        context: {
-          slug: project.summary.node.fields.slug,
-          project: key,
-          previous: previousProject,
-          next: nextProject
-        }
+        path: slug,
+        component: timeline,
+        context: { slug, previous, next }
       });
-    })
+    }
+  ));
 
-    return null
-  })
+  // Todo: Create series pages
+
+  return null
+
 }
+
+const getSlug = (function(){
+  const cache = {};
+  return function(str) {
+    let slug = cache[str];
+    if (!slug) {
+      slug = slugify(str);
+      cache[str] = slug;
+    }
+    return slug;
+  };
+})();
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
 
   if (node.internal.type === `MarkdownRemark`) {
     const fileNode = getNode(node.parent);
-    const {name: fileName, relativeDirectory: projectPath} = fileNode;
-    const project = projectPath.split('/')[0];
-    // console.log(`\n${JSON.stringify(fileNode, undefined, 2)}\n`);
-
-    // const value = createFilePath({ node, getNode, trailingSlash: false })
-    // console.log(`\ncreateFilePath: ${value}\n`);
-
-    const isProjectSummary = fileName === '_index';
-    const projectSlug = slugify(project);
-    const slug = isProjectSummary ? `/${projectSlug}` : `/${projectSlug}/${slugify(fileName)}`;
+    const {name: fileName, relativeDirectory: seriesPath} = fileNode;
+    const fileSlug = getSlug(fileName);
+    const pathSlugs = seriesPath.split(path.sep).map(s => getSlug(s));
+    let series = pathSlugs[pathSlugs.length - 1];
+    let slug = pathSlugs.join('/');
+    if (fileSlug !== 'index' && fileSlug !== series) {
+      slug = `${slug}/${fileSlug}`;
+    } else {
+      series = '';
+    }
 
     createNodeField({
-      name: `slug`,
+      name: 'slug',
       node,
       value: slug,
     });
-
     createNodeField({
-      name: `project`,
+      name: 'series',
       node,
-      value: project
+      value: series
     });
-
-    createNodeField({
-      name: `isProjectSummary`,
-      node,
-      value: isProjectSummary
-    })
   }
 }

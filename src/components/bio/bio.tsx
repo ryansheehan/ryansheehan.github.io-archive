@@ -7,10 +7,9 @@
 
 import React from "react"
 import { StaticQuery, graphql } from "gatsby"
-import Image from "gatsby-image"
+// import Image from "gatsby-image"
 
-import { rhythm } from "../utils/typography"
-import {isDevelopment} from '../../environment';
+import { rhythm } from "../../utils/typography"
 
 function Bio() {
   return (
@@ -18,9 +17,6 @@ function Bio() {
       query={bioQuery}
       render={data => {
         const { author, social } = data.site.siteMetadata
-
-        // console.log(`social:`, JSON.stringify(social));
-
         return (
           <div
             style={{
@@ -28,7 +24,7 @@ function Bio() {
               marginBottom: rhythm(2.5),
             }}
           >
-            <Image
+            {/* <Image
               fixed={data.avatar.childImageSharp.fixed}
               alt={author}
               style={{
@@ -40,18 +36,14 @@ function Bio() {
               imgStyle={{
                 borderRadius: `50%`,
               }}
-            />
-            <div>
-              {isDevelopment ? <div style={{
-                color: 'red',
-                fontSize: '0.7em'
-              }}>Development Mode </div> : ''}
-              <p>
-                <strong>{author}</strong> is a developer who loves to play with new technologies.
-                {` `}
-                Samples of his tinkering are <a href={`https://github.com/${social.github}`}>found on Github</a>
-              </p>
-            </div>
+            /> */}
+            <p>
+              Written by <strong>{author}</strong> who lives and works in DFW building useful things.
+              {` `}
+              <a href={`https://github.com/${social.github}`}>
+                You should follow him on Github
+              </a>
+            </p>
           </div>
         )
       }}
