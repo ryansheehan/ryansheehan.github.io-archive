@@ -10,8 +10,9 @@ const MainPage: React.FunctionComponent<any> = ({data}) => {
 
   return (
     <div className={cx('mainPageContainer')}>
-      {title}
+      <h1>{title}</h1>
       <div>Coming soon!</div>
+      <div>Contact {email}</div>
     </div>
   );
 };
