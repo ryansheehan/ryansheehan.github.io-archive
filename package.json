@@ -9,6 +9,7 @@
     "rebuild": "run-s clean:cache build",
     "clean:cache": "rimraf .cache",
     "develop": "gatsby develop",
+    "deploy": "run-s clean:cache build deploy:github",
     "deploy:github": "gh-pages -d public -b master -m \"publishing posts [ci skip]\"",
     "format": "prettier --write src/**/*.{js,jsx}",
     "start": "run-s clean:cache develop",
