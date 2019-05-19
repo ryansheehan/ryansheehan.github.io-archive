@@ -12,7 +12,7 @@ const MainPage: React.FunctionComponent<any> = ({data}) => {
     <div className={cx('mainPageContainer')}>
       <h1>{title}</h1>
       <div>Coming soon!</div>
-      <div>Contact {email}</div>
+      <div>Contact <a href={`mailto:${email}`}>{email}</a></div>
     </div>
   );
 };
