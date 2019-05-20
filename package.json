@@ -54,6 +54,7 @@
     "typeface-montserrat": "0.0.54",
     "typescript": "^3.4.5",
     "typography": "^0.16.19",
+    "typography-theme-ocean-beach": "^0.16.19",
     "typography-theme-wordpress-2016": "^0.16.19"
   },
   "devDependencies": {
