@@ -1,0 +1,96 @@
+name: Ryan Sheehan
+address:
+  street: 3028 Bedias Creek Dr
+  city: Prosper
+  state: TX
+  zip: "75078"
+email: rsheehan@gmail.com
+phone: "6302488741"
+education:
+  - school: Southern Methodist University
+    degree: Masters Certificate of Interactive Technology
+    graduation: May 2008
+  - school: Southern Illinois University Edwardsville
+    degree: Bachelor’s of Science in Computer Science
+    graduation: August 2005
+technologies:
+  - Typescript/Javascript
+  - C#
+  - C++
+  - HTML
+  - Angular
+  - CSS/SCSS
+  - Docker/Docker-Compose
+  - ASP .Net Core
+  - NodeJS
+  - Git
+  - Some Kubernetes
+  - TeamCity
+  - WPF (Windows Presentation Framework)
+  - XAML
+  - React
+  - Vue
+  - REST Api
+  - Some GraphQL
+  - Some Python
+  - Some Azure
+  - Firebase
+history:
+  - company: Tyler Technologies
+    title: Lead Developer
+    time:
+      start: "April 2016"
+      end: "Current"
+    responsibilities:
+      - Research and develop Tyler's cloud-ready development strategy
+      - Build application and api accelerators for rapid application development
+      - Support and train teams transitioning into cloud development
+      - Help design microservice platform architecture
+  - company: Tyler Technologies
+    title: Scrum Master/Lead Developer
+    time:
+      start: "June 2014"
+      end: "April 2016"
+    responsibilities:
+      - "Conduct agile ceremonies: stand-ups, reviews, retrospectives, sizing, planning, etc"
+      - Screen and interview potential employees
+      - Engineer testing strategies for massive refactor effort
+      - Plan and present development strategies and progress to executives
+      - Teach other teams proper agile development
+  - company: Tyler Technologies
+    title: Senior Developer
+    time:
+      start: "June 2013"
+      end: "June 2014"
+    responsibilities:
+      - Provide guidance on proper WPF/MVVM development
+      - Develop desktop application to manage the jury selection process
+      - Provide guidance on agile development processes
+  - company: Halliburton
+    title: Contracted Developer
+    time:
+      start: "June 2010"
+      end: "June 2013"
+    responsibilities:
+      - Unity 3D app for calculating well-tool depths and generating pdf printouts
+      - WPF app for generating forms and check sheets involving safety and delivery
+  - company: High Voltage Software
+    title: Software Engineer
+    time:
+      start: "May 2008"
+      end: "June 2010"
+    responsibilities:
+      - "Iron Man 2 (Wii, PSP)"
+      - Controls, Boss AI, Flying Scenes, Some animation and visual effects
+      - "High Voltage Hot Rod Show (WiiWare)"
+      - Controls, Physics, Game rules
+  - company: High Voltage Software
+    title: Intern Developer
+    time:
+      start: "May 2007"
+      end: "August 2007"
+    responsibilities:
+      - "America's Army: True Soldiers (Xbox 360)"
+      - Fixed game play and visual defects
+
+

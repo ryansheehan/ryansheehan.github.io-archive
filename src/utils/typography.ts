@@ -1,15 +1,15 @@
 import Typography from "typography"
 import OceanBeach from "typography-theme-ocean-beach";
 
-// OceanBeach.overrideThemeStyles = () => {
-//   return {
-//     "a.gatsby-resp-image-link": {
-//       boxShadow: `none`,
-//     },
-//   }
-// }
+OceanBeach.overrideThemeStyles = () => {
+  return {
+    "a.gatsby-resp-image-link": {
+      boxShadow: `none`,
+    },
+  }
+}
 
-// delete OceanBeach.googleFonts
+delete OceanBeach.googleFonts
 
 const typography = new Typography(OceanBeach)
 

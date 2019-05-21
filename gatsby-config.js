@@ -25,6 +25,13 @@ module.exports = {
     {
       resolve: 'gatsby-source-filesystem',
       options: {
+        path: `${__dirname}/content/resume`,
+        name: 'resume',
+      },
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
         path: `${__dirname}/content/assets`,
         name: 'assets',
       },
@@ -51,6 +58,7 @@ module.exports = {
         ],
       },
     },
+    'gatsby-transformer-yaml',
     'gatsby-transformer-sharp',
     {
       resolve: 'gatsby-plugin-draft',
