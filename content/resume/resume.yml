@@ -1,11 +1,10 @@
 name: Ryan Sheehan
 address:
-  street: 3028 Bedias Creek Dr
   city: Prosper
   state: TX
-  zip: "75078"
 email: rsheehan@gmail.com
 phone: "6302488741"
+
 education:
   - school: Southern Methodist University
     degree: Masters Certificate of Interactive Technology
@@ -13,84 +12,119 @@ education:
   - school: Southern Illinois University Edwardsville
     degree: Bachelor’s of Science in Computer Science
     graduation: August 2005
+
 technologies:
-  - Typescript/Javascript
-  - C#
-  - C++
-  - HTML
-  - Angular
-  - CSS/SCSS
-  - Docker/Docker-Compose
-  - ASP .Net Core
-  - NodeJS
-  - Git
-  - Some Kubernetes
-  - TeamCity
-  - WPF (Windows Presentation Framework)
-  - XAML
-  - React
-  - Vue
-  - REST Api
-  - Some GraphQL
-  - Some Python
-  - Some Azure
-  - Firebase
-history:
+  - category: Languages
+    skills:
+      - TypeScript
+      - C#
+      - javascript
+      - C++
+  - category: Web Development
+    skills:
+      - Angular
+      - HTML
+      - SCSS
+      - CSS
+      - React
+      - Web Components
+  - category: Technologies
+    skills:
+      - ASP.Net Core
+      - nodejs
+      - WPF
+  - category: Tools
+    skills:
+      - Docker
+      - docker-compose
+      - git
+      - TeamCity
+      - Unity3D
+  - category: Cloud
+    skills:
+      - Some Kubernetes
+      - Some Azure
+
+experience:
   - company: Tyler Technologies
-    title: Lead Developer
-    time:
-      start: "April 2016"
-      end: "Current"
-    responsibilities:
-      - Research and develop Tyler's cloud-ready development strategy
-      - Build application and api accelerators for rapid application development
-      - Support and train teams transitioning into cloud development
-      - Help design <b>microservice platform architecture</b>
-  - company: Tyler Technologies
-    title: Scrum Master/Lead Developer
-    time:
-      start: "June 2014"
-      end: "April 2016"
-    responsibilities:
-      - "Conduct agile ceremonies: stand-ups, reviews, retrospectives, sizing, planning, etc"
-      - Screen and interview potential employees
-      - Engineer testing strategies for massive refactor effort
-      - Plan and present development strategies and progress to executives
-      - Teach other teams proper agile development
-  - company: Tyler Technologies
-    title: Senior Developer
-    time:
-      start: "June 2013"
-      end: "June 2014"
-    responsibilities:
-      - Provide guidance on proper WPF/MVVM development
-      - Develop desktop application to manage the jury selection process
-      - Provide guidance on agile development processes
+    start: June 2013
+    end: Current
+    projects:
+      - project: Web App Accelerator
+        jobTitle: Lead Developer
+        description: A .Net Core template project that stands up a cloud-ready web application with backend support.
+        notes:
+          - Frontend is a static single page application written in Angular 7
+          - Backend is written in ASP.Net Core 2.2
+          - Full CI/CD with git, TeamCity
+          - Unified UI and Branding
+          - Support for open-id connect, Consul configuration, i18n Localization, and Swagger
+          - Produces a single docker container asset with intent for deployment in kubernetes
+      - project: Speaking and Training
+        jobTitle: Lead Developer
+        description: Lead training exercises on using Angular, Docker, Agile Development, and accelerators
+        notes:
+          - Trained teams in modern web application development and agile development methodologies
+          - Speaking engagements with 40+ attendees on technology topics
+          - Presented project planning and forecasts to division execs
+      - project: Financial Refactor
+        jobTitle: Scrum Master / Lead Developer
+        description: Co-managed a team of 8-11 as a scrum master
+        notes:
+          - Grew a team into proper agile management techniques
+          - Conducted sizing, planning, stand-ups, review, and retrospective meetings
+          - Guided the team on behavior driven development strategies to maximize refactoring effort's insurance
+      - project: Jury
+        jobTitle: Senior Developer
+        description: Desktop application to manage the jury selection process
+        notes:
+          - Guided the team's WPF and Xaml development effort
+          - Introduced agile development practices to the team
+          - Created a novel way to reduce Xaml template code duplication
+          - Co-designed an extensible UX minded data entry flow
+
   - company: Halliburton
-    title: Contracted Developer
-    time:
-      start: "June 2010"
-      end: "June 2013"
-    responsibilities:
-      - Unity 3D app for calculating well-tool depths and generating pdf printouts
-      - WPF app for generating forms and check sheets involving safety and delivery
+    start: June 2010
+    end: June 2013
+    projects:
+      - project: PFG
+        jobTitle: Contract Developer
+        description: Forms builder and data entry manager
+        notes:
+          - A desktop WPF application for managing around 150 safety checklists and forms
+          - Received extensive training on agile development practices
+          - Developed with a string MVVM implementation design
+      - project: Smart String Plus
+        jobTitle: Contract Developer
+        description: Desktop application that renders down hole oil well tools in 3D
+        notes:
+          - Leveraged Unity3D game engine to render tools in real time
+          - Provide depth to top/bottom calculations on a per tool bases
+          - Print renderings to pdf
+          - Performed memory and processing profiling techniques to improve performance
+
   - company: High Voltage Software
-    title: Software Engineer
-    time:
-      start: "May 2008"
-      end: "June 2010"
-    responsibilities:
-      - "Iron Man 2 (Wii, PSP)"
-      - Controls, Boss AI, Flying Scenes, Some animation and visual effects
-      - "High Voltage Hot Rod Show (WiiWare)"
-      - Controls, Physics, Game rules
-  - company: High Voltage Software
-    title: Intern Developer
-    time:
-      start: "May 2007"
-      end: "August 2007"
-    responsibilities:
-      - "America's Army: True Soldiers (Xbox 360)"
-      - Fixed game play and visual defects
+    start: May 2007
+    end: June 2010
+    projects:
+      - project: Iron Man 2
+        jobTitle: Gameplay Engineer
+        description: The Wii and PSP version of Marvel's Iron Man 2 video game
+        notes:
+          - Implemented boss artificial intelligence, weapons, visual effects
+          - Helped design and implement the on on-rails flying scene game mechanics
+          - Worked with artists to properly setup animation blending for several characters
+      - project: High Voltage Hot Rod Show
+        jobTitle: Gameplay Engineer
+        description: A WiiWare 3D top-down arcade racing game with a rock-a-billie theme
+        notes:
+          - Implemented arcade car physics based on user motion controls
+          - Helped design game mechanics with vehicle interactions on the track
+      - project: "America's Army: True Soldiers"
+        jobTitle: Software Development Intern
+        description: First person shooter for the US Army on the Xbox360
+        notes:
+          - Fixed gameplay and graphics bugs
+          - Helped to implement achievements for XBox Live integration
 
 

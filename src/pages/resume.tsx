@@ -2,35 +2,110 @@ import React from 'react';
 import { graphql } from 'gatsby';
 import classNames from 'classnames/bind';
 import styles from './resume.module.scss';
-import { rhythm, scale } from "../utils/typography"
+import { rhythm } from '../utils/typography';
 
 const cx = classNames.bind(styles);
 
-const NameTitle: React.FC<{name: string}> = ({name}) => <h1 className={cx('name')}>{name}</h1>;
+interface School {
+  school: string;
+  degree: string;
+  graduation: string;
+}
+
+interface TechCategory {
+  category: string;
+  skills: string[];
+}
+
+interface ProjectInfo {
+  project: string;
+  description: string;
+  jobTitle: string;
+  notes: string[];
+}
+
+interface CompanyInfo {
+  company: string;
+  start: string;
+  end: string;
+  projects: ProjectInfo[];
+}
 
 interface ResumeProps {
   data: {
     resumeYaml: {
       name: string;
-      address: {
-        street: string;
-        city: string;
-        state: string;
-        zip: string;
-      };
+      address: { city: string; state: string };
       email: string;
       phone: string;
-      education: {school: string; degree: string; graduation: string;}[];
-      technologies: string[];
-      history: {
-        company: string;
-        title: string;
-        time: { start: string; end: string; };
-        responsibilities: string[];
-      }[];
-    }
-  }
+      education: School[];
+      technologies: TechCategory[];
+      experience: CompanyInfo[];
+    };
+  };
 }
+
+const PageTitle: React.FC<{title: string}> = ({title}) => <h1 style={{margin: `${rhythm(0.5)} 0`, textAlign: 'center'}}>{title}</h1>
+
+const SectionTitle: React.FC<{title: string}> = ({title}) => <h2 style={{margin: `${rhythm(0.5)} 0`, textAlign: 'center'}}>{title}</h2>
+
+const ContactInfo: React.FC<{location: string, phone: string, email: string}> = ({location, phone, email}) =>
+  <div>
+    <div>{location}</div>
+    <div>{`+1 ${phone.substr(0, 3)}.${phone.substr(3, 3)}.${phone.substr(6)}`}</div>
+    <div><a href={`mailto:${email}`}>{email}</a></div>
+  </div>;
+
+const Header: React.FC<{name: string, location: string, phone: string, email: string}> = ({name, ...contactInfo}) =>
+  <div>
+    <PageTitle title={name} />
+    <ContactInfo {...contactInfo} />
+  </div>
+
+const Skills: React.FC<{technologies: TechCategory[]}> = ({technologies}) =>
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'auto 1fr',
+    gridColumnGap: '8px',
+  }}>{
+    technologies.map(({category, skills}) =>
+      <>
+        <div style={{textAlign: 'start'}}>{category}:</div>
+        <div>{skills.join(` ${String.fromCharCode(0xfeff00b7)} `)}</div>
+      </>
+    )
+  }</div>;
+
+const ProjectDetails: React.FC<ProjectInfo> = ({project, description, jobTitle, notes}) =>
+  <div>
+    <h4 style={{margin: `${rhythm(0.5)} 0`}}>{project}</h4>
+    <div>{description}</div>
+    <div>{jobTitle}</div>
+    <div>{notes.map(note => <div dangerouslySetInnerHTML={{__html: note}}/>)}</div>
+  </div>;
+
+const CompanyExperience: React.FC<CompanyInfo> = ({company, start, end, projects}) =>
+  <div>
+    <h3 style={{margin: `${rhythm(0.5)} 0`}}>{company}</h3>
+    <div>{`${start} - ${end}`}</div>
+    {projects.map(project => <ProjectDetails {...project}/>)}
+  </div>;
+
+const Experience: React.FC<{experience: CompanyInfo[]}> = ({experience}) =>
+  <div>{
+    experience.map(company => <CompanyExperience {...company}/>)
+  }</div>
+
+const Education: React.FC<{education: School[]}> = ({education}) =>
+  <div>{
+    education.map(({school, graduation, degree}) =>
+      <div>
+        <div>{degree}</div>
+        <div>{school}</div>
+        <div>{graduation}</div>
+      </div>
+    )
+  }</div>
 
 const Resume: React.FC<ResumeProps> = ({data}) => {
   const {
@@ -39,91 +114,49 @@ const Resume: React.FC<ResumeProps> = ({data}) => {
     email,
     phone,
     technologies,
-    history,
-    education,
+    experience,
+    education
   } = data.resumeYaml;
 
-  console.log(scale(1.5));
-  console.log(rhythm(0.5));
+  const contactInfo = {location: `${address.city}, ${address.state}`, email, phone};
 
   return (
-    <article className={cx('root')}>
-      <NameTitle name={name} />
-
-      <section className={cx('contactInfo')}>
-        <div>{`+1 ${phone.substr(0, 3)} ${phone.substr(3, 3)} ${phone.substr(6)}`}</div>
-        <div><a href={`mailto:${email}`}>{email}</a></div>
-        <div>{address.city}, {address.state}</div>
-      </section>
-
-      <hr />
-
-      <section>
-        <h2 className={cx('sectionTitle')}>Key Skills</h2>
-        <div>{technologies.map(tech => <span>{tech}</span>)}</div>
-      </section>
-
-      <hr />
-
-      <section>
-        <h2 className={cx('sectionTitle')}>Professional Experience</h2>
-        <div>{history.map(({company, title, time, responsibilities}) =>
-          <div key={company.concat(title)} className={cx('experienceListing')}>
-            <div className={cx('company')}>{company}</div>
-            <h3 className={cx('position')}>{title}</h3>
-            <div className={cx('dates')}>{time.start} - {time.end}</div>
-            <ul className={cx('responsibilities')}>{
-              responsibilities.map(bullet => <li className={cx('bullet')} dangerouslySetInnerHTML={{__html: bullet}}/>)
-            }</ul>
-          </div>
-        )}</div>
-      </section>
-
-      <hr />
-
-      <section>
-        <h2 className={cx('sectionTitle')}>Education</h2>
-        <div>{education.map(({school, degree, graduation}) =>
-          <div key={school.concat(degree)}>
-            <div>{degree}</div>
-            <div>{school}</div>
-            <div>{graduation}</div>
-          </div>
-        )}</div>
-      </section>
-    </article>
-  );
-};
+    <div className={cx('root')} style={{padding: '0 8px'}}>
+      <Header name={name} {...contactInfo}/>
+      <SectionTitle title="Skills"/>
+      <Skills technologies={technologies}/>
+      <SectionTitle title="Experience"/>
+      <Experience experience={experience}/>
+      <SectionTitle title="Education"/>
+      <Education education={education}/>
+    </div>
+  )
+}
 
 export default Resume;
+
 
 export const pageQuery = graphql`
 {
   resumeYaml {
     name
-    address {
-      street
-      city
-      state
-      zip
-    }
+    address { city state }
     email
     phone
-    education {
-      school
-      degree
-      graduation
-    }
-    technologies
-    history {
+    education { school degree graduation}
+    technologies { category skills }
+    experience {
       company
-      title
-      time {
-        start
-        end
+      start
+      end
+      projects {
+        project
+        description
+        jobTitle
+        notes
       }
-      responsibilities
     }
   }
 }
+
 `;
