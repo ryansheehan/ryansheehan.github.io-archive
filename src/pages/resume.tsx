@@ -1,17 +1,20 @@
 import React, {useState} from 'react';
 import { graphql } from 'gatsby';
-import Helmet from 'react-helmet';
-import { makeStyles, ThemeProvider } from '@material-ui/styles';
+// import Helmet from 'react-helmet';
+// import { mainTheme } from '../themes/main.theme';
+import { makeStyles } from '@material-ui/styles';
 import {
   Switch,
   Paper,
+  // CssBaseline,
+  Divider,
+  Theme,
 } from '@material-ui/core';
-
-import { mainTheme } from '../themes/main.theme';
 import { ResumeHeader } from '../components/resume/ResumeHeader';
 import { TypographyDemo } from '../components/resume/TypographyDemo';
 import { IResume } from '../interfaces/resume/resume.interface';
 import { PersonalInfo } from '../components/resume/PersonalInfo';
+import { SkillList } from '../components/resume/SkillsList';
 
 interface ResumeProps {
   data: {
@@ -19,32 +22,35 @@ interface ResumeProps {
   };
 }
 
-const useStyles = makeStyles({
-  root: {
-    display: 'flex',
-    flexFlow: 'column nowrap',
-    alignItems: 'center',
-  },
-  resume: {
-    minHeight: '800px',
-    width: '100%',
-    display: 'grid',
-    gridTemplateColumns: '1fr auto',
-    gridTemplateRows: 'auto 1fr',
-    gridTemplateAreas: `
-      "header header"
-      "main side"
-    `,
-  },
-  header: {
-    gridArea: 'header'
-  },
-  main: {
-    gridArea: 'main'
-  },
-  side: {
-    gridArea: 'side',
-    width: '200px'
+const useStyles = makeStyles((theme: Theme) => {
+  return {
+    root: {
+      display: 'flex',
+      flexFlow: 'column nowrap',
+      alignItems: 'center',
+    },
+    resume: {
+      minHeight: '800px',
+      width: '100%',
+      display: 'grid',
+      gridTemplateColumns: '1fr auto',
+      gridTemplateRows: 'auto 1fr',
+      gridTemplateAreas: `
+        "header header"
+        "main side"
+      `,
+    },
+    header: {
+      gridArea: 'header'
+    },
+    main: {
+      gridArea: 'main'
+    },
+    side: {
+      backgroundColor: theme.palette.primary.light,
+      gridArea: 'side',
+      // width: '200px'
+    }
   }
 });
 
@@ -56,33 +62,32 @@ const Resume: React.FC<ResumeProps> = ({data}) => {
     name,
     title,
     personalInfo,
-    summary,
-    education
+    // summary,
+    // education,
+    skills
   } = data.resumeYaml;
 
 
   return (
-    <ThemeProvider theme={mainTheme}>
+    <React.Fragment>
       <Switch checked={showTypography} onChange={() => setShowTypography(!showTypography)} />
       <div className={root}>
-        <Helmet>
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500|Roboto+Slab:400" />
-          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-        </Helmet>
         {showTypography ? <TypographyDemo /> : ''}
         <Paper className={resume}>
           <div className={header}>
             <ResumeHeader name={name} title={title} />
           </div>
-          <div className={main}></div>
-          <div className={side} style={{
-            backgroundColor: mainTheme.palette.primary.light
-          }}>
+          <div className={main}>
+            <div style={{height: '40px'}}></div>
+            <Divider variant="middle"/>
+          </div>
+          <div className={side}>
             <PersonalInfo personalInfo={personalInfo} />
+            <SkillList skills={skills} />
           </div>
         </Paper>
       </div>
-    </ThemeProvider>
+    </React.Fragment>
   )
 }
 
@@ -95,7 +100,7 @@ export const pageQuery = graphql`
     name
     title
     personalInfo {
-      address { city state }
+      address { city state zip }
       email
       phone
       website
@@ -106,6 +111,10 @@ export const pageQuery = graphql`
       school
       degree
       graduation
+    }
+    skills {
+      category
+      skills { name level }
     }
   }
 }
