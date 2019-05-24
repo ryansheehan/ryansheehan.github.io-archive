@@ -8,6 +8,7 @@ export interface IPersonalInfo {
   website: string;
   social: {
     github: string;
+    linkedin: string;
   }
 }
 

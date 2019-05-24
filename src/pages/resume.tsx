@@ -99,7 +99,7 @@ export const pageQuery = graphql`
       email
       phone
       website
-      social { github }
+      social { github linkedin }
     }
     summary
     education {

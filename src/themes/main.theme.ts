@@ -8,6 +8,11 @@ export const mainTheme = createMuiTheme({
         backgroundImage: 'none',
         textShadow: 'none',
       }
+    },
+    MuiButtonBase: {
+      root: {
+        backgroundImage: 'none'
+      }
     }
   },
   typography: {

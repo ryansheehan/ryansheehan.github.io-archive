@@ -156,6 +156,14 @@ module.exports = {
     {
       resolve: `gatsby-plugin-material-ui`,
     },
+    {
+      resolve: 'gatsby-plugin-react-svg',
+      options: {
+          rule: {
+            include: /images/
+          }
+      }
+    },
     'gatsby-plugin-sass'
   ],
 }
