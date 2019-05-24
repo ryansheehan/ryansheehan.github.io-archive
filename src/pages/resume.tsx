@@ -9,7 +9,7 @@ import {
 
 import { mainTheme } from '../themes/main.theme';
 import { ResumeHeader } from '../components/resume/ResumeHeader';
-import { TypogrpahyDemo } from '../components/resume/TypographyDemo';
+import { TypographyDemo } from '../components/resume/TypographyDemo';
 import { IResume } from '../interfaces/resume/resume.interface';
 import { PersonalInfo } from '../components/resume/PersonalInfo';
 
@@ -69,7 +69,7 @@ const Resume: React.FC<ResumeProps> = ({data}) => {
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500|Roboto+Slab:400" />
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         </Helmet>
-        {showTypography ? <TypogrpahyDemo /> : ''}
+        {showTypography ? <TypographyDemo /> : ''}
         <Paper className={resume}>
           <div className={header}>
             <ResumeHeader name={name} title={title} />

@@ -13,7 +13,7 @@ const useTypeStyles = makeStyles({
   }
 })
 
-export const TypogrpahyDemo: React.FC = () => {
+export const TypographyDemo: React.FC = () => {
   const {types} = useTypeStyles();
 
   return (
