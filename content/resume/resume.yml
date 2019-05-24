@@ -1,9 +1,23 @@
 name: Ryan Sheehan
-address:
-  city: Prosper
-  state: TX
-email: rsheehan@gmail.com
-phone: "6302488741"
+title: Lead Software Engineer
+personalInfo:
+  address:
+    street: 3028 Bedias Creek Dr
+    city: Prosper
+    state: TX
+    zip: '75078'
+  email: rsheehan@gmail.com
+  phone: "6302488741"
+  website: https://ryansheehan.github.io
+  social:
+    github: https://github.com/ryansheehan
+
+
+summary:
+  An enthusiastic software engineer with 10+ years experience developing
+  a robots to video games to enterprise software. I possess insatiable
+  appetite for learning new technology stacks, leading software development
+  teams, and driving business forward with engaging usable software.
 
 education:
   - school: Southern Methodist University
@@ -13,37 +27,47 @@ education:
     degree: Bachelor’s of Science in Computer Science
     graduation: August 2005
 
-technologies:
+skills:
   - category: Languages
     skills:
-      - TypeScript
-      - C#
-      - javascript
-      - C++
+      - name: TypeScript/javascript
+        level: 5
+      - name: C#
+        level: 5
+      - name: C++
+        level: 4
   - category: Web Development
     skills:
-      - Angular
-      - HTML
-      - SCSS
-      - CSS
-      - React
-      - Web Components
+      - name: Angular
+        level: 5
+      - name: SCSS/CSS
+        level: 3
+      - name: React
+        level: 3
   - category: Technologies
     skills:
-      - ASP.Net Core
-      - nodejs
-      - WPF
+      - name: Rx/rxjs
+        level: 5
+      - name: ASP.Net Core
+        level: 3
+      - name: nodejs
+        level: 3
   - category: Tools
     skills:
-      - Docker
-      - docker-compose
-      - git
-      - TeamCity
-      - Unity3D
+      - name: Docker/docker-compose
+        level: 4
+      - name: git
+        level: 4
+      - name: TeamCity
+        level: 4
+      - name: Unity3D
+        level: 3
   - category: Cloud
     skills:
-      - Some Kubernetes
-      - Some Azure
+      - name: Kubernetes
+        level: 2
+      - name: Azure
+        level: 2
 
 experience:
   - company: Tyler Technologies

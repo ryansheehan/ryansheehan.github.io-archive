@@ -19,6 +19,8 @@
     "gh-pages": "gh-pages"
   },
   "dependencies": {
+    "@material-ui/core": "^4.0.0-rc.0",
+    "@material-ui/styles": "^4.0.0-rc.0",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
     "babel-eslint": "^10.0.1",
@@ -29,6 +31,7 @@
     "gatsby-plugin-feed": "^2.2.0",
     "gatsby-plugin-google-analytics": "^2.0.20",
     "gatsby-plugin-manifest": "^2.1.1",
+    "gatsby-plugin-material-ui": "^2.0.0-beta.2",
     "gatsby-plugin-offline": "^2.1.1",
     "gatsby-plugin-react-helmet": "^3.0.12",
     "gatsby-plugin-sass": "^2.0.11",
