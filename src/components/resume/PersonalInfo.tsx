@@ -43,7 +43,7 @@ export const PersonalInfo: React.FC<{personalInfo: IPersonalInfo}> =
         </div>
       </Typography>
       <Typography className={value} variant="body2" align="left">
-        <Link href="https://www.google.com/maps/dir/Prosper,+TX+75078//@33.2362947,-96.8361294,13z/data=!4m9!4m8!1m5!1m1!1s0x864c3f677146866f:0x19e803820966f487!2m2!1d-96.80111!2d33.2362278!1m0!3e0" target="_blank">{location}</Link>
+        <Link href="https://www.google.com/maps/dir/Prosper,+TX+75078//@33.2362947,-96.8361294,13z/data=!4m9!4m8!1m5!1m1!1s0x864c3f677146866f:0x19e803820966f487!2m2!1d-96.80111!2d33.2362278!1m0!3e0" target="_blank" color="inherit">{location}</Link>
       </Typography>
 
       <Typography className={label} variant="subtitle2" align="left">
@@ -52,18 +52,18 @@ export const PersonalInfo: React.FC<{personalInfo: IPersonalInfo}> =
           <span>Phone</span>
         </div>
       </Typography>
-      <Typography className={value} variant="body2" align="left">
-        <Link href={`tel:+1${phone}`}>{`${phone.substr(0,3)}.${phone.substr(3,3)}.${phone.substr(6)}`}</Link>
+      <Typography className={value} variant="body2" align="left" color="textPrimary">
+        <Link href={`tel:+1${phone}`} color="inherit">{`${phone.substr(0,3)}.${phone.substr(3,3)}.${phone.substr(6)}`}</Link>
       </Typography>
 
-      <Typography className={label} variant="subtitle2" align="left">
+      <Typography className={label} variant="subtitle2" align="left" color="textPrimary">
         <div className={iconLabel}>
           <Icon fontSize="small">mail</Icon>
           <span>Email</span>
         </div>
       </Typography>
-      <Typography className={value} variant="body2" align="left">
-        <Link href={`mailto:${email}`}>{email}</Link>
+      <Typography className={value} variant="body2" align="left" color="textPrimary">
+        <Link href={`mailto:${email}`} color="inherit">{email}</Link>
       </Typography>
     </div>
   );
