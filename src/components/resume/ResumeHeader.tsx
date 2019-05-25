@@ -1,10 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Typography, Theme } from '@material-ui/core';
+import { Typography, Theme, Container } from '@material-ui/core';
 
 const useStyle = makeStyles((theme: Theme) => ({
   root: {
-    padding: '0 24px',
+    padding: `${theme.spacing(2)}px`,
     backgroundColor: theme.palette.primary.dark
   }
 }))

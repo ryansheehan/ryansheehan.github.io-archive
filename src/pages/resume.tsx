@@ -9,6 +9,8 @@ import {
   // CssBaseline,
   Divider,
   Theme,
+  Container,
+  Grid,
 } from '@material-ui/core';
 import { ResumeHeader } from '../components/resume/ResumeHeader';
 import { TypographyDemo } from '../components/resume/TypographyDemo';
@@ -25,9 +27,9 @@ interface ResumeProps {
 const useStyles = makeStyles((theme: Theme) => {
   return {
     root: {
-      display: 'flex',
-      flexFlow: 'column nowrap',
-      alignItems: 'center',
+      // display: 'flex',
+      // flexFlow: 'column nowrap',
+      // alignItems: 'center',
     },
     resume: {
       minHeight: '800px',
@@ -47,9 +49,9 @@ const useStyles = makeStyles((theme: Theme) => {
       gridArea: 'main'
     },
     side: {
+      padding: `${theme.spacing(2)}px`,
       backgroundColor: theme.palette.primary.light,
       gridArea: 'side',
-      // width: '200px'
     }
   }
 });
@@ -71,22 +73,20 @@ const Resume: React.FC<ResumeProps> = ({data}) => {
   return (
     <React.Fragment>
       <Switch checked={showTypography} onChange={() => setShowTypography(!showTypography)} />
-      <div className={root}>
-        {showTypography ? <TypographyDemo /> : ''}
+      {showTypography ? <TypographyDemo /> : ''}
+      <Container className={root}>
         <Paper className={resume}>
           <div className={header}>
             <ResumeHeader name={name} title={title} />
           </div>
           <div className={main}>
-            <div style={{height: '40px'}}></div>
-            <Divider variant="middle"/>
           </div>
-          <div className={side}>
+          <Grid className={side} direction="column" justify="space-around" alignItems="stretch">
             <PersonalInfo personalInfo={personalInfo} />
             <SkillList skills={skills} />
-          </div>
+          </Grid>
         </Paper>
-      </div>
+      </Container>
     </React.Fragment>
   )
 }
