@@ -81,7 +81,7 @@ const Resume: React.FC<ResumeProps> = ({data}) => {
           </div>
           <div className={main}>
           </div>
-          <Grid className={side} direction="column" justify="space-around" alignItems="stretch">
+          <Grid className={side}>
             <PersonalInfo personalInfo={personalInfo} />
             <SkillList skills={skills} />
           </Grid>
