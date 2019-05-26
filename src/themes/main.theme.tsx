@@ -40,14 +40,18 @@ export const theme = createMuiTheme({
 
   },
   palette: {
-    primary: blueGrey,
+    primary: {
+      ...blueGrey,
+      light: blueGrey[100],
+      dark: blueGrey[800]
+    },
     background: {
       default: blueGrey[100],
       paper: blueGrey[50]
     },
     text: {
       primary: blueGrey[900],
-      secondary: blueGrey[100]
+      secondary: blueGrey[50]
     },
     type: 'light'
   }

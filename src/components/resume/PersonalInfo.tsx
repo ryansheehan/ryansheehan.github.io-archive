@@ -3,9 +3,7 @@ import { IPersonalInfo } from '../../interfaces/resume/resume.interface';
 import {
   Typography,
   Divider,
-  Link,
   Icon,
-  IconButton,
   SvgIcon,
   List,
   ListItemIcon,
