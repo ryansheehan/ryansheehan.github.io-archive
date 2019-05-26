@@ -16,7 +16,7 @@ personalInfo:
 
 summary:
   An enthusiastic software engineer with 10+ years experience developing
-  a robots to video games to enterprise software. I possess insatiable
+  everything from robots to video games to enterprise software. I possess insatiable
   appetite for learning new technology stacks, leading software development
   teams, and driving business forward with engaging usable software.
 
@@ -71,85 +71,54 @@ skills:
         level: 2
 
 experience:
-  - company: Tyler Technologies
-    start: June 2013
-    end: Current
-    projects:
-      - project: Web App Accelerator
-        jobTitle: Lead Developer
-        description: A .Net Core template project that stands up a cloud-ready web application with backend support.
-        notes:
-          - Frontend is a static single page application written in Angular 7
-          - Backend is written in ASP.Net Core 2.2
-          - Full CI/CD with git, TeamCity
-          - Unified UI and Branding
-          - Support for open-id connect, Consul configuration, i18n Localization, and Swagger
-          - Produces a single docker container asset with intent for deployment in kubernetes
-      - project: Speaking and Training
-        jobTitle: Lead Developer
-        description: Lead training exercises on using Angular, Docker, Agile Development, and accelerators
-        notes:
-          - Trained teams in modern web application development and agile development methodologies
-          - Speaking engagements with 40+ attendees on technology topics
-          - Presented project planning and forecasts to division execs
-      - project: Financial Refactor
-        jobTitle: Scrum Master / Lead Developer
-        description: Co-managed a team of 8-11 as a scrum master
-        notes:
-          - Grew a team into proper agile management techniques
-          - Conducted sizing, planning, stand-ups, review, and retrospective meetings
-          - Guided the team on behavior driven development strategies to maximize refactoring effort's insurance
-      - project: Jury
-        jobTitle: Senior Developer
-        description: Desktop application to manage the jury selection process
-        notes:
-          - Guided the team's WPF and Xaml development effort
-          - Introduced agile development practices to the team
-          - Created a novel way to reduce Xaml template code duplication
-          - Co-designed an extensible UX minded data entry flow
-
-  - company: Halliburton
-    start: June 2010
-    end: June 2013
-    projects:
-      - project: PFG
-        jobTitle: Contract Developer
-        description: Forms builder and data entry manager
-        notes:
-          - A desktop WPF application for managing around 150 safety checklists and forms
-          - Received extensive training on agile development practices
-          - Developed with a string MVVM implementation design
-      - project: Smart String Plus
-        jobTitle: Contract Developer
-        description: Desktop application that renders down hole oil well tools in 3D
-        notes:
-          - Leveraged Unity3D game engine to render tools in real time
-          - Provide depth to top/bottom calculations on a per tool bases
-          - Print renderings to pdf
-          - Performed memory and processing profiling techniques to improve performance
-
-  - company: High Voltage Software
-    start: May 2007
-    end: June 2010
-    projects:
-      - project: Iron Man 2
-        jobTitle: Gameplay Engineer
-        description: The Wii and PSP version of Marvel's Iron Man 2 video game
-        notes:
-          - Implemented boss artificial intelligence, weapons, visual effects
-          - Helped design and implement the on on-rails flying scene game mechanics
-          - Worked with artists to properly setup animation blending for several characters
-      - project: High Voltage Hot Rod Show
-        jobTitle: Gameplay Engineer
-        description: A WiiWare 3D top-down arcade racing game with a rock-a-billie theme
-        notes:
-          - Implemented arcade car physics based on user motion controls
-          - Helped design game mechanics with vehicle interactions on the track
-      - project: "America's Army: True Soldiers"
-        jobTitle: Software Development Intern
-        description: First person shooter for the US Army on the Xbox360
-        notes:
-          - Fixed gameplay and graphics bugs
-          - Helped to implement achievements for XBox Live integration
-
-
+  - title: Lead Software Developer
+    company: Tyler Technologies
+    start: "2016-04"
+    end: present
+    notes:
+      - Helped design and build an application accelerator with Asp.Net Core and Angular 7.
+        The accelerator had considerations for identity, configuration, logging, debugging, and localization.
+        Full CI/CD integration, and produce a docker container for use in a kubernetes deployment.
+      - Provided support and training to local and remote teams
+      - Worked closely with the CTO to plan and move many divisions' products to the cloud
+      - Provided guidance to teams on front-end architecture
+      - Contributed to a focused R&D effort to bring new technologies into the stack.
+  - title: Scrum Master / Lead Software Developer
+    company: Tyler Technologies
+    start: "2014-06"
+    end: "2016-04"
+    notes:
+      - Trained teams and management on proper agile development methodologies
+      - Built a complicated automated testing infrastructure for a massive refactor project
+        using BDD ideas, gherkins, and automated acceptance tests.
+      - Co-managed a mix team of up-to 11, running agile ceremonies, and providing feedback
+      - Helped plan, forecast, and present the state of the project to division leaders
+  - title: Senior Developer
+    company: Tyler Technologies
+    start: "2013-06"
+    end: "2014-06"
+    notes:
+      - Built an MVVM WPF application for a new jury selection application
+      - Educated the team on Xaml best practices, and agile managementpluggable
+      - Co-designed an extensible UX flow for managing variations in county workflow
+  - title: Contracted Developer
+    company: Halliburton
+    start: "2010-06"
+    end: "2013-06"
+    notes:
+      - Built an application in Unity3D for rendering well information in real-time 3D
+      - Added support for Unity to generate and print a pdf of a rendering
+      - Worked to profile memory and processor utilization to improve performance
+      - Saved a project designed and written in action script without any previous experience
+      - Helped design and deploy a WPF application for processing safety and inventory checklists
+      - Organized a community of practice for sharing technology and ideas
+      - Managed an after-hours company indoor soccer team
+  - title: Software Engineer
+    company: High Voltage Software
+    start: "2008-05"
+    end: "2010-06"
+    notes:
+      - Built player motion controls, boss ai, on-rails flying levels for Iron Man 2 for the Wii and PSP
+      - Engineered arcade racer physics, controls, and gameplay for High Voltage Hot Rod Show on WiiWare
+      - Helped artists achieve great looking animation blends
+      - Worked through issues, both technical and non-technical, in the certification process to release games

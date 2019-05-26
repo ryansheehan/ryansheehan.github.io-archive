@@ -1,24 +1,82 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/styles';
-import {Typography, Divider} from '@material-ui/core';
+import {
+  Typography,
+  Divider,
+  List,
+  ListItem,
+  ListSubheader,
+  ListItemText,
+  makeStyles,
+  Theme
+} from '@material-ui/core';
 import { ISkillCategory } from '../../interfaces/resume/resume.interface';
 
-const SkillCategory: React.FC<ISkillCategory> = ({category}) => {
-  return (
-    <div>
-      <Typography variant="subtitle2" align="left">{category}</Typography>
-    </div>
-  );
-}
+const useStyles = makeStyles((theme: Theme) => {
+  const removeMarginPadding = {
+    margin: 0,
+    padding: 0
+  }
+
+  return {
+    categoriesList: {
+      width: '100%',
+      maxWidth: 360,
+    },
+    categoryListItem: {
+      ...removeMarginPadding,
+      lineHeight: 1.58
+    },
+    nested: {
+      ...removeMarginPadding,
+      paddingLeft: theme.spacing(2),
+    }
+  }
+});
 
 export const SkillList: React.FC<{skills: ISkillCategory[]}> =
-({skills}) => {
+({skills: categories}) => {
+
+  const {nested, categoriesList, categoryListItem} = useStyles();
 
   return (
     <div>
-      <Typography variant="h5" align="center" color="textPrimary">Skills</Typography>
-      <Divider variant="middle" style={{marginBottom: '8px'}}/>
-      {}
+      <Typography variant="h5" align="left" color="textPrimary">Skills</Typography>
+      <Divider/>
+      <List dense
+            disablePadding
+            className={categoriesList}
+            // component="div"
+      >{
+        categories.map(({category, skills}) =>
+          <ListItem key={category}
+                    // component="div"
+                    className={categoryListItem}
+                    disableGutters
+          >
+            <List dense
+                  // component="div"
+                  disablePadding
+                  subheader={
+                    <ListSubheader  disableGutters
+                                    color="inherit"
+                                    className={categoryListItem}
+                                    // component="div"
+                    >{category}</ListSubheader>
+                  }
+            >{
+              skills.map(({name}) =>
+                <ListItem key={name}
+                          // component="div"
+                          disableGutters
+                          className={nested}
+                >
+                  <ListItemText>{name}</ListItemText>
+                </ListItem>
+              )
+            }</List>
+          </ListItem>
+        )
+      }</List>
     </div>
   );
 }

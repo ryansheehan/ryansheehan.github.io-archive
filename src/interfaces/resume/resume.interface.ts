@@ -30,6 +30,14 @@ export interface ISkillCategory {
   skills: ISkill [];
 }
 
+export interface ICompanyInfo {
+  company: string;
+  title: string;
+  start: string;
+  end: string;
+  notes: string[];
+}
+
 export interface IResume {
   name: string;
   title: string;
@@ -37,4 +45,5 @@ export interface IResume {
   summary: string;
   skills: ISkillCategory[];
   education: ISchool[];
+  experience: ICompanyInfo[];
 }

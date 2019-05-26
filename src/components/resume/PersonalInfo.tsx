@@ -30,35 +30,35 @@ export const PersonalInfo: React.FC<{personalInfo: IPersonalInfo}> =
 
   return (
     <div>
-      <Typography variant="h5" align="center" color="textPrimary">Personal Info</Typography>
-      <Divider variant="middle"/>
+      <Typography variant="h5" align="left" color="textPrimary">Personal Info</Typography>
+      <Divider />
 
-      <List dense={true}>
-        <ListItem button={true} href={`https://www.google.com/maps/place/${city},+${state}+${zip}`}>
+      <List dense disablePadding>
+        <ListItem button={true} disableGutters href={`https://www.google.com/maps/place/${city},+${state}+${zip}`}>
           <ListItemIcon className={iconLabel}>
             <Icon fontSize="small">location_on</Icon>
           </ListItemIcon>
           <ListItemText primary={`${city}, ${state}`} />
         </ListItem>
-        <ListItem button={true} href={`tel:+1${phone}`}>
+        <ListItem button={true} disableGutters href={`tel:+1${phone}`}>
           <ListItemIcon className={iconLabel}>
             <Icon fontSize="small">phone</Icon>
           </ListItemIcon>
           <ListItemText primary={`${phone.substr(0,3)}.${phone.substr(3,3)}.${phone.substr(6)}`} />
         </ListItem>
-        <ListItem button={true} href={`mailto:${email}`}>
+        <ListItem button={true} disableGutters href={`mailto:${email}`}>
           <ListItemIcon className={iconLabel}>
             <Icon fontSize="small">email</Icon>
           </ListItemIcon>
           <ListItemText primary={email} />
         </ListItem>
-        <ListItem button={true} href={website}>
+        <ListItem button={true} disableGutters href={website}>
           <ListItemIcon className={iconLabel}>
             <Icon fontSize="small">web</Icon>
           </ListItemIcon>
           <ListItemText primary={website.substr(8)} />
         </ListItem>
-        <ListItem button={true} href={social.github}>
+        <ListItem button={true} disableGutters href={social.github}>
           <ListItemIcon className={iconLabel}>
             <SvgIcon>
               {/* Github icon */}
@@ -67,7 +67,7 @@ export const PersonalInfo: React.FC<{personalInfo: IPersonalInfo}> =
           </ListItemIcon>
           <ListItemText primary={social.github.substr(19)} />
         </ListItem>
-        <ListItem button={true} href={social.linkedin}>
+        <ListItem button={true} disableGutters href={social.linkedin}>
           <ListItemIcon className={iconLabel}>
             <SvgIcon>
               {/* LinkedIn icon */}
