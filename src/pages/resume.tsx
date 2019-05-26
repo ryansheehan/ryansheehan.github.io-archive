@@ -18,6 +18,7 @@ import { IResume } from '../interfaces/resume/resume.interface';
 import { PersonalInfo } from '../components/resume/PersonalInfo';
 import { SkillList } from '../components/resume/SkillsList';
 import { ExperienceList } from '../components/resume/ExperienceList';
+import { EducationList } from '../components/resume/EducationList';
 
 interface ResumeProps {
   data: {
@@ -70,7 +71,7 @@ const Resume: React.FC<ResumeProps> = ({data}) => {
     title,
     personalInfo,
     summary,
-    // education,
+    education,
     experience,
     skills
   } = data.resumeYaml;
@@ -91,6 +92,9 @@ const Resume: React.FC<ResumeProps> = ({data}) => {
             </Grid>
             <Grid item className={section}>
               <ExperienceList experience={experience} />
+            </Grid>
+            <Grid item className={section}>
+              <EducationList education={education} />
             </Grid>
           </Grid>
           <Grid className={side} container direction="column">

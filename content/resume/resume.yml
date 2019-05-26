@@ -23,10 +23,10 @@ summary:
 education:
   - school: Southern Methodist University
     degree: Masters Certificate of Interactive Technology
-    graduation: May 2008
+    graduation: "2008-05"
   - school: Southern Illinois University Edwardsville
     degree: Bachelor’s of Science in Computer Science
-    graduation: August 2005
+    graduation: "2005-08"
 
 skills:
   - category: Languages

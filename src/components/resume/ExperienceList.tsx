@@ -30,17 +30,17 @@ export const ExperienceList: React.FC<{experience: ICompanyInfo[]}> = ({experien
         {experience.map(({start, end, company, title, notes}) =>
         <div key={`${start}-${end}`} className={experienceBlock}>
           <TimelineLayout start={start} end={end}>
-          <Typography variant="subtitle2">{title}</Typography>
-          <Typography component="div" variant="caption">{company}</Typography>
-          <Typography component="div" variant="body2">
-            {
-              notes.map(note =>
-              <div className={notesContainer} key={note}>
-                <Icon style={{fontSize:'.75rem', lineHeight:'1.43'}}>arrow_right</Icon>
-                <div>{note}</div>
-              </div>)
-            }
-          </Typography>
+            <Typography variant="subtitle2">{title}</Typography>
+            <Typography component="div" variant="caption">{company}</Typography>
+            <Typography component="div" variant="body2">
+              {
+                notes.map(note =>
+                <div className={notesContainer} key={note}>
+                  <Icon style={{fontSize:'.75rem', lineHeight:'1.43'}}>arrow_right</Icon>
+                  <div>{note}</div>
+                </div>)
+              }
+            </Typography>
           </TimelineLayout>
         </div>
         )}
