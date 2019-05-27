@@ -8,6 +8,7 @@ import {
 
 const useStyles = makeStyles((theme: Theme) => ({
   meter: {
+    whiteSpace: 'nowrap',
     '&>*': {
       marginRight: theme.spacing(0.7),
     },
@@ -24,16 +25,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const SkillMeter: React.FC<{level: number, size?: number, classNames?: string}> = ({level, size=14, classNames}) => {
   const {meter, dot, grey} = useStyles();
-  // const [skillWord, setSkillWord] = useState('none');
-  // useEffect(() => {
-  //   switch(level) {
-  //     case 1: setSkillWord('Interested'); break;
-  //     case 2: setSkillWord('Basic'); break;
-  //     case 3: setSkillWord('Intermediate'); break;
-  //     case 4: setSkillWord('Advanced'); break;
-  //     case 5: setSkillWord('Expert'); break;
-  //   }
-  // });
   const [dotClassNames, setDotClassNames] = useState<string[]>([]);
   useEffect(() => {
     const names = [];

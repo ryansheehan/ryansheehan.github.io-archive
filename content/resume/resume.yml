@@ -51,8 +51,8 @@ skills:
         level: 3
   - category: Technologies
     skills:
-      - name: ASP.Net Core
-        level: 3
+      - name: ".Net Core"
+        level: 4
       - name: nodejs
         level: 3
   - category: Tools
@@ -70,6 +70,8 @@ skills:
       - name: Kubernetes
         level: 2
       - name: Azure
+        level: 2
+      - name: Firebase
         level: 2
 
 experience:

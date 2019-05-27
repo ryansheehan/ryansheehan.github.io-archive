@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => {
       gridRowGap: theme.spacing(0.5),
     },
     skillMeter: {
-      justifySelf: 'right'
+      textAlign: 'right'
     },
     skillGroup: {
       marginTop: theme.spacing(1),
@@ -32,6 +32,17 @@ const useStyles = makeStyles((theme: Theme) => {
 export const SkillList: React.FC<{skills: ISkillCategory[]}> = ({skills: categories}) => {
 
   const {skillGroup, skillList, skillMeter} = useStyles();
+  const getSkillLevelName = (level: number) => {
+    let name = 'none';
+    switch(level) {
+      case 1: name = 'Interested'; break;
+      case 2: name = 'Learning'; break;
+      case 3: name = 'Intermediate'; break;
+      case 4: name = 'Advanced'; break;
+      case 5: name = 'Expert'; break;
+    }
+    return name;
+  }
 
   return (<>{categories.map(({category, skills}) =>
     <div key={category}>
@@ -43,7 +54,10 @@ export const SkillList: React.FC<{skills: ISkillCategory[]}> = ({skills: categor
           skills.map(({name, level}) =>
             <div className={skillList}>
               <div>{name}</div>
-              <SkillMeter classNames={skillMeter} size={10} level={level}/>
+              <div>
+                <SkillMeter classNames={skillMeter} size={10} level={level}/>
+                <Typography component="div" variant="caption" align="right">{getSkillLevelName(level)}</Typography>
+              </div>
             </div>
           )
         }
