@@ -31,31 +31,33 @@ education:
 skills:
   - category: Languages
     skills:
-      - name: TypeScript/javascript
+      - name: TypeScript
+        level: 5
+      - name: javascript
         level: 5
       - name: C#
         level: 5
       - name: C++
         level: 4
-  - category: Web Development
+  - category: Web
     skills:
       - name: Angular
         level: 5
-      - name: SCSS/CSS
+      - name: rxjs
+        level: 5
+      - name: scss/css
         level: 3
       - name: React
         level: 3
   - category: Technologies
     skills:
-      - name: Rx/rxjs
-        level: 5
       - name: ASP.Net Core
         level: 3
       - name: nodejs
         level: 3
   - category: Tools
     skills:
-      - name: Docker/docker-compose
+      - name: Docker
         level: 4
       - name: git
         level: 4

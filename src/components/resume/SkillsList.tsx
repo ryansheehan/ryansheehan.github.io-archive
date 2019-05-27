@@ -2,33 +2,31 @@ import React from 'react';
 import {
   Typography,
   Divider,
-  List,
-  ListItem,
-  ListSubheader,
-  ListItemText,
   makeStyles,
   Theme
 } from '@material-ui/core';
 import { ISkillCategory } from '../../interfaces/resume/resume.interface';
+import { SkillMeter } from './SkillMeter';
 
 const useStyles = makeStyles((theme: Theme) => {
-  const removeMarginPadding = {
-    margin: 0,
-    padding: 0
-  }
-
   return {
-    categoriesList: {
-      width: '100%',
-      maxWidth: 360,
+    root: {
+      display: 'grid',
+      gridTemplateColumns: '1fr',
+      gridAutoRows: 'auto',
+      gridRowGap: theme.spacing(1)
     },
-    categoryListItem: {
-      ...removeMarginPadding,
-      lineHeight: 1.58
+    skillList: {
+      display: 'grid',
+      gridTemplateRows: 'auto auto',
+      gridTemplateColumns: 'auto auto',
+      gridRowGap: theme.spacing(0.5),
     },
-    nested: {
-      ...removeMarginPadding,
-      paddingLeft: theme.spacing(2),
+    skillMeter: {
+      justifySelf: 'right'
+    },
+    skillGroup: {
+      marginTop: theme.spacing(1)
     }
   }
 });
@@ -36,47 +34,30 @@ const useStyles = makeStyles((theme: Theme) => {
 export const SkillList: React.FC<{skills: ISkillCategory[]}> =
 ({skills: categories}) => {
 
-  const {nested, categoriesList, categoryListItem} = useStyles();
+  const {root, skillGroup, skillList, skillMeter} = useStyles();
 
   return (
-    <div>
-      <Typography variant="h5" align="left" color="textPrimary">Skills</Typography>
-      <Divider/>
-      <List dense
-            disablePadding
-            className={categoriesList}
-            // component="div"
-      >{
+    <div className={root}>
+      {
         categories.map(({category, skills}) =>
-          <ListItem key={category}
-                    // component="div"
-                    className={categoryListItem}
-                    disableGutters
-          >
-            <List dense
-                  // component="div"
-                  disablePadding
-                  subheader={
-                    <ListSubheader  disableGutters
-                                    color="inherit"
-                                    className={categoryListItem}
-                                    // component="div"
-                    >{category}</ListSubheader>
-                  }
-            >{
-              skills.map(({name}) =>
-                <ListItem key={name}
-                          // component="div"
-                          disableGutters
-                          className={nested}
-                >
-                  <ListItemText>{name}</ListItemText>
-                </ListItem>
+          <div key={category}>
+            <Typography variant="h5" align="left" color="textPrimary">{category}</Typography>
+            <Divider/>
+            <div key={name} className={skillGroup}>
+            {
+              skills.map(({name, level}) =>
+                <Typography component="div" variant="body2">
+                  <div className={skillList}>
+                    <div>{name}</div>
+                    <SkillMeter classNames={skillMeter} size={10} level={level}/>
+                  </div>
+                </Typography>
               )
-            }</List>
-          </ListItem>
+            }
+            </div>
+          </div>
         )
-      }</List>
+      }
     </div>
   );
 }

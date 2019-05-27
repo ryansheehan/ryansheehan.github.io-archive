@@ -23,7 +23,7 @@ export const EducationList: React.FC<{education: ISchool[]}> = ({education}) => 
       <div>
         {
           education.map(({school, degree, graduation}) =>
-          <div className={educationBlock}>
+          <div className={educationBlock} key={school}>
             <TimelineLayout start={graduation}>
               <Typography variant="subtitle2">{degree}</Typography>
               <Typography component="div" variant="caption">{school}</Typography>
