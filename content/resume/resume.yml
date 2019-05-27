@@ -57,6 +57,8 @@ skills:
         level: 3
   - category: Tools
     skills:
+      - name: Agile
+        level: 5
       - name: Docker
         level: 4
       - name: git
@@ -80,13 +82,13 @@ experience:
     start: "2016-04"
     end: present
     notes:
-      - Helped design and build an application accelerator with Asp.Net Core and Angular 7.
-        The accelerator had considerations for identity, configuration, logging, debugging, and localization.
-        Full CI/CD integration, and produce a docker container for use in a kubernetes deployment.
+      - "Helped design and build an application accelerator with Asp.Net Core and Angular 7:
+        supports identity, configuration, logging, debugging, localization,
+        CI/CD integration; produces a docker container for use in a kubernetes deployment."
       - Provided support and training to local and remote teams
       - Worked closely with the CTO to plan and move many divisions' products to the cloud
       - Provided guidance to teams on front-end architecture
-      - Contributed to a focused R&D effort to bring new technologies into the stack.
+      - Contributed to a focused R&D effort to bring new technologies into the stack
   - title: Scrum Master / Lead Software Developer
     company: Tyler Technologies
     start: "2014-06"
@@ -95,25 +97,25 @@ experience:
       - Trained teams and management on proper agile development methodologies
       - Built a complicated automated testing infrastructure for a massive refactor project
         using BDD ideas, gherkins, and automated acceptance tests.
-      - Co-managed a mix team of up-to 11, running agile ceremonies, and providing feedback
+      - Co-managed a mixed team of 11, ran agile ceremonies, and provided feedback to management
       - Helped plan, forecast, and present the state of the project to division leaders
   - title: Senior Developer
     company: Tyler Technologies
     start: "2013-06"
     end: "2014-06"
     notes:
-      - Built an MVVM WPF application for a new jury selection application
-      - Educated the team on Xaml best practices, and agile managementpluggable
+      - Built a greenfield MVVM WPF application for a jury selection application
+      - Educated the team on Xaml best practices and agile management
       - Co-designed an extensible UX flow for managing variations in county workflow
-  - title: Contracted Developer
+  - title: Contracted Software Developer
     company: Halliburton
     start: "2010-06"
     end: "2013-06"
     notes:
-      - Built an application in Unity3D for rendering well information in real-time 3D
+      - Built an application in Unity3D for rendering oilwell information in real-time 3D
       - Added support for Unity to generate and print a pdf of a rendering
       - Worked to profile memory and processor utilization to improve performance
-      - Saved a project designed and written in action script without any previous experience
+      - Saved a project designed and written in Action Script without any previous Action Script experience
       - Helped design and deploy a WPF application for processing safety and inventory checklists
       - Organized a community of practice for sharing technology and ideas
       - Managed an after-hours company indoor soccer team
@@ -122,7 +124,7 @@ experience:
     start: "2008-05"
     end: "2010-06"
     notes:
-      - Built player motion controls, boss ai, on-rails flying levels for Iron Man 2 for the Wii and PSP
+      - Built player motion controls, boss AI, on-rails flying levels for Iron Man 2 for the Wii and PSP
       - Engineered arcade racer physics, controls, and gameplay for High Voltage Hot Rod Show on WiiWare
-      - Helped artists achieve great looking animation blends
-      - Worked through issues, both technical and non-technical, in the certification process to release games
+      - Helped artists achieve smooth animation blends
+      - Worked through technical and non-technical issues in the certification process to release games
