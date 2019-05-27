@@ -1,19 +1,15 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { graphql } from 'gatsby';
 // import Helmet from 'react-helmet';
 // import { mainTheme } from '../themes/main.theme';
 import { makeStyles } from '@material-ui/styles';
 import {
-  Switch,
   Paper,
-  // CssBaseline,
   Theme,
   Container,
-  Grid,
   Typography,
 } from '@material-ui/core';
 import { ResumeHeader } from '../components/resume/ResumeHeader';
-import { TypographyDemo } from '../components/resume/TypographyDemo';
 import { IResume } from '../interfaces/resume/resume.interface';
 import { PersonalInfo } from '../components/resume/PersonalInfo';
 import { SkillList } from '../components/resume/SkillsList';
@@ -29,9 +25,7 @@ interface ResumeProps {
 const useStyles = makeStyles((theme: Theme) => {
   return {
     root: {
-      // display: 'flex',
-      // flexFlow: 'column nowrap',
-      // alignItems: 'center',
+
     },
     resume: {
       minHeight: '800px',
@@ -43,9 +37,6 @@ const useStyles = makeStyles((theme: Theme) => {
         "header header"
         "main side"
       `,
-    },
-    section: {
-      marginTop: theme.spacing(2)
     },
     header: {
       gridArea: 'header'
@@ -72,8 +63,7 @@ const useStyles = makeStyles((theme: Theme) => {
 });
 
 const Resume: React.FC<ResumeProps> = ({data}) => {
-  const {root, resume, header, main, side, section} = useStyles();
-  const [showTypography, setShowTypography] = useState(false);
+  const {root, resume, header, main, side} = useStyles();
 
   const {
     name,
@@ -87,26 +77,22 @@ const Resume: React.FC<ResumeProps> = ({data}) => {
 
 
   return (
-    <React.Fragment>
-      <Switch checked={showTypography} onChange={() => setShowTypography(!showTypography)} />
-      {showTypography ? <TypographyDemo /> : ''}
-      <Container className={root}>
-        <Paper className={resume}>
-          <div className={header}>
-            <ResumeHeader name={name} title={title} />
-          </div>
-          <div className={main}>
-            <Typography variant="body2">{summary}</Typography>
-            <ExperienceList experience={experience} />
-            <EducationList education={education} />
-          </div>
-          <div className={side}>
-            <PersonalInfo personalInfo={personalInfo} />
-            <SkillList skills={skills} />
-          </div>
-        </Paper>
-      </Container>
-    </React.Fragment>
+    <Container className={root}>
+      <Paper className={resume}>
+        <div className={header}>
+          <ResumeHeader name={name} title={title} />
+        </div>
+        <div className={main}>
+          <Typography variant="body2">{summary}</Typography>
+          <ExperienceList experience={experience} />
+          <EducationList education={education} />
+        </div>
+        <div className={side}>
+          <PersonalInfo personalInfo={personalInfo} />
+          <SkillList skills={skills} />
+        </div>
+      </Paper>
+    </Container>
   )
 }
 
