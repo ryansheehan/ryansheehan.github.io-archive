@@ -49,10 +49,10 @@ export const SkillList: React.FC<{skills: ISkillCategory[]}> = ({skills: categor
       <Typography variant="h5" align="left" color="textPrimary">{category}</Typography>
       <Divider/>
       <Typography component="div" variant="body2">
-        <div key={name} className={skillGroup}>
+        <div className={skillGroup}>
         {
           skills.map(({name, level}) =>
-            <div className={skillList}>
+            <div  key={name} className={skillList}>
               <div>{name}</div>
               <div>
                 <SkillMeter classNames={skillMeter} size={10} level={level}/>
