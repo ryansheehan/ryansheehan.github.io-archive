@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme: Theme) => {
       padding: theme.spacing(2),
     },
     side: {
-      padding: `0 ${theme.spacing(2)}px ${theme.spacing(2)}px ${theme.spacing(2)}px`,
+      padding: theme.spacing(2),
       backgroundColor: theme.palette.primary.light,
       gridArea: 'side',
       display: 'grid',
