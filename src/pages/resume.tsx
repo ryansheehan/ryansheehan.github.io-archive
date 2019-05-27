@@ -52,12 +52,21 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     main: {
       gridArea: 'main',
+      display: 'grid',
+      gridTemplateColumns: '1fr',
+      gridTemplateRows: 'auto auto auto',
+      gridRowGap: theme.spacing(1),
       padding: theme.spacing(2),
     },
     side: {
       padding: `0 ${theme.spacing(2)}px ${theme.spacing(2)}px ${theme.spacing(2)}px`,
       backgroundColor: theme.palette.primary.light,
       gridArea: 'side',
+      display: 'grid',
+      gridTemplateColumns: 'auto',
+      gridAutoRows: 'auto',
+      gridRowGap: theme.spacing(1),
+      alignContent: 'flex-start'
     },
   }
 });
@@ -86,25 +95,15 @@ const Resume: React.FC<ResumeProps> = ({data}) => {
           <div className={header}>
             <ResumeHeader name={name} title={title} />
           </div>
-          <Grid className={main} container direction="column">
-            <Grid item>
-              <Typography variant="body2">{summary}</Typography>
-            </Grid>
-            <Grid item className={section}>
-              <ExperienceList experience={experience} />
-            </Grid>
-            <Grid item className={section}>
-              <EducationList education={education} />
-            </Grid>
-          </Grid>
-          <Grid className={side} container direction="column">
-            <Grid item className={section}>
-              <PersonalInfo personalInfo={personalInfo} />
-            </Grid>
-            <Grid item className={section}>
-              <SkillList skills={skills} />
-            </Grid>
-          </Grid>
+          <div className={main}>
+            <Typography variant="body2">{summary}</Typography>
+            <ExperienceList experience={experience} />
+            <EducationList education={education} />
+          </div>
+          <div className={side}>
+            <PersonalInfo personalInfo={personalInfo} />
+            <SkillList skills={skills} />
+          </div>
         </Paper>
       </Container>
     </React.Fragment>

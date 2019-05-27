@@ -10,12 +10,6 @@ import { SkillMeter } from './SkillMeter';
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
-    root: {
-      display: 'grid',
-      gridTemplateColumns: '1fr',
-      gridAutoRows: 'auto',
-      gridRowGap: theme.spacing(1)
-    },
     skillList: {
       display: 'grid',
       gridTemplateRows: 'auto auto',
@@ -31,33 +25,26 @@ const useStyles = makeStyles((theme: Theme) => {
   }
 });
 
-export const SkillList: React.FC<{skills: ISkillCategory[]}> =
-({skills: categories}) => {
+export const SkillList: React.FC<{skills: ISkillCategory[]}> = ({skills: categories}) => {
 
-  const {root, skillGroup, skillList, skillMeter} = useStyles();
+  const {skillGroup, skillList, skillMeter} = useStyles();
 
-  return (
-    <div className={root}>
+  return (<>{categories.map(({category, skills}) =>
+    <div key={category}>
+      <Typography variant="h5" align="left" color="textPrimary">{category}</Typography>
+      <Divider/>
+      <div key={name} className={skillGroup}>
       {
-        categories.map(({category, skills}) =>
-          <div key={category}>
-            <Typography variant="h5" align="left" color="textPrimary">{category}</Typography>
-            <Divider/>
-            <div key={name} className={skillGroup}>
-            {
-              skills.map(({name, level}) =>
-                <Typography component="div" variant="body2">
-                  <div className={skillList}>
-                    <div>{name}</div>
-                    <SkillMeter classNames={skillMeter} size={10} level={level}/>
-                  </div>
-                </Typography>
-              )
-            }
+        skills.map(({name, level}) =>
+          <Typography component="div" variant="body2">
+            <div className={skillList}>
+              <div>{name}</div>
+              <SkillMeter classNames={skillMeter} size={10} level={level}/>
             </div>
-          </div>
+          </Typography>
         )
       }
+      </div>
     </div>
-  );
+  )}</>);
 }
