@@ -19,7 +19,14 @@ const useStyles = makeStyles((theme: Theme) =>({
   },
   '@media print': {
     experienceBlock: {
-      pageBreakInside: 'avoid'
+      // pageBreakInside: 'avoid',
+      // '&>*>*:nth-child(2)': {
+      //   pageBreakInside: 'avoid'
+
+      // }
+    },
+    root: {
+      // pageBreakInside: 'avoid'
     }
   }
 }))

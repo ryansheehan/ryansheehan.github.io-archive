@@ -16,13 +16,16 @@ const useStyle = makeStyles((theme: Theme) => ({
     alignItems: 'center'
   },
   download: {
-    gridArea: 'icon'
+    gridArea: 'icon',
+    '@media print': {
+      display: 'none'
+    }
   },
   mainTitle: {
     gridArea: 'title'
   },
   subtitle: {
-    gridArea: 'subtitle'
+    gridArea: 'subtitle',
   }
 }))
 

@@ -44,9 +44,10 @@ const useStyles = makeStyles((theme: Theme) => {
       gridArea: 'main',
       display: 'grid',
       gridTemplateColumns: '1fr',
-      gridTemplateRows: 'auto auto auto',
+      gridTemplateRows: 'auto auto 1fr',
       gridRowGap: theme.spacing(1),
       padding: theme.spacing(2),
+      alignContent: 'flex-start',
     },
     side: {
       padding: theme.spacing(2),
@@ -63,8 +64,10 @@ const useStyles = makeStyles((theme: Theme) => {
         // height: '100%'
       },
       main: {
-        alignContent: 'flex-start',
-      },
+        '&>*:nth-child(3)': {
+          breakInside: 'avoid'
+        }
+      }
     },
   }
 });
