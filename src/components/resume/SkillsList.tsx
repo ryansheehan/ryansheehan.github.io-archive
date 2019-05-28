@@ -31,10 +31,10 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     '@media print': {
       skillCategory: {
-        pageBreakInside: 'avoid'
+        // pageBreakInside: 'avoid'
       },
       skillGroup: {
-        pageBreakInside: 'avoid'
+        // pageBreakInside: 'avoid'
       }
     }
   }
