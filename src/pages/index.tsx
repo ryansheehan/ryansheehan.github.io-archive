@@ -1,21 +1,42 @@
 import React from 'react';
-import { graphql } from 'gatsby';
-import classNames from 'classnames/bind';
-import styles from './index.module.scss';
+import { graphql, Link as GatsbyLink } from 'gatsby';
+import { makeStyles } from '@material-ui/styles';
+import {
+  Theme,
+  Typography,
+  Container,
+  Link,
+  Paper,
+} from '@material-ui/core';
+import { PageProps } from '../interfaces/page-props.interface';
 
-const cx = classNames.bind(styles);
+const useStyles = makeStyles((theme: Theme) => ({
+  paper: {
+    marginTop: theme.spacing(6),
+    minHeight: '600px',
+    display: 'flex',
+    flexFlow: 'column nowrap',
+    justifyContent: 'center'
+  }
+}));
 
-const MainPage: React.FunctionComponent<any> = ({data}) => {
-  const { title, email } = data.site.siteMetadata;
+const MainPage: React.FC<PageProps> = ({data}) => {
+  const {title, email} = data.site.siteMetadata;
+  const {paper} = useStyles();
 
   return (
-    <div className={cx('mainPageContainer')}>
-      <h1>{title}</h1>
-      <div>Coming soon!</div>
-      <div>Contact <a href={`mailto:${email}`}>{email}</a></div>
-    </div>
-  );
-};
+    <Container>
+      <Paper className={paper}>
+        <Typography variant="h1" align="center" gutterBottom>{title}</Typography>
+        <Typography align="center" component="div">
+          <p>This site is under construction.</p>
+          <p>Contact <Link href={`mailto:${email}`}>{email}</Link> for more information.</p>
+        </Typography>
+        <Typography align="center" variant="subtitle2">Looking for my <Link component={GatsbyLink} to="/resume">resume</Link>?</Typography>
+      </Paper>
+    </Container>
+  )
+}
 
 export default MainPage;
 

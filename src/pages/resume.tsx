@@ -1,7 +1,5 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-// import Helmet from 'react-helmet';
-// import { mainTheme } from '../themes/main.theme';
 import { makeStyles } from '@material-ui/styles';
 import {
   Paper,
