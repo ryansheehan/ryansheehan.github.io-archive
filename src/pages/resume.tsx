@@ -16,6 +16,8 @@ import { SkillList } from '../components/resume/SkillsList';
 import { ExperienceList } from '../components/resume/ExperienceList';
 import { EducationList } from '../components/resume/EducationList';
 
+import './resume.scss'
+
 interface ResumeProps {
   data: {
     resumeYaml: IResume;
@@ -29,7 +31,6 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     resume: {
       minHeight: '800px',
-      width: '100%',
       display: 'grid',
       gridTemplateColumns: '1fr auto',
       gridTemplateRows: 'auto 1fr',
@@ -58,6 +59,14 @@ const useStyles = makeStyles((theme: Theme) => {
       gridAutoRows: 'auto',
       gridRowGap: theme.spacing(1),
       alignContent: 'flex-start'
+    },
+    '@media print': {
+      resume: {
+        // height: '100%'
+      },
+      main: {
+        alignContent: 'flex-start',
+      },
     },
   }
 });

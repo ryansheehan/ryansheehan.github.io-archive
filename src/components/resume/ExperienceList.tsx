@@ -15,7 +15,12 @@ const useStyles = makeStyles((theme: Theme) =>({
     gridTemplateColumns: 'auto 1fr',
   },
   experienceBlock: {
-    marginTop: theme.spacing(3)
+    marginTop: theme.spacing(3),
+  },
+  '@media print': {
+    experienceBlock: {
+      pageBreakInside: 'avoid'
+    }
   }
 }))
 

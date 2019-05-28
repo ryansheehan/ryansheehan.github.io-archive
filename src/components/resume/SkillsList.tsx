@@ -25,13 +25,24 @@ const useStyles = makeStyles((theme: Theme) => {
       gridTemplateColumns: '1fr',
       gridAutoRows: 'auto',
       gridRowGap: theme.spacing(0.5),
+    },
+    skillCategory: {
+
+    },
+    '@media print': {
+      skillCategory: {
+        pageBreakInside: 'avoid'
+      },
+      skillGroup: {
+        pageBreakInside: 'avoid'
+      }
     }
   }
 });
 
 export const SkillList: React.FC<{skills: ISkillCategory[]}> = ({skills: categories}) => {
 
-  const {skillGroup, skillList, skillMeter} = useStyles();
+  const {skillGroup, skillList, skillMeter, skillCategory} = useStyles();
   const getSkillLevelName = (level: number) => {
     let name = 'none';
     switch(level) {
@@ -45,7 +56,7 @@ export const SkillList: React.FC<{skills: ISkillCategory[]}> = ({skills: categor
   }
 
   return (<>{categories.map(({category, skills}) =>
-    <div key={category}>
+    <div key={category} className={skillCategory}>
       <Typography variant="h5" align="left" color="textPrimary">{category}</Typography>
       <Divider/>
       <Typography component="div" variant="body2">
