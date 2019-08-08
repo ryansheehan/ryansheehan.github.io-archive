@@ -40,6 +40,39 @@ const MainPage: React.FC<PageProps> = ({data}) => {
 
 export default MainPage;
 
+// export const pageQuery = graphql`
+//   query {
+//     site {
+//       siteMetadata {
+//         title
+//         email
+//       }
+//     }
+//     allMarkdownRemark(
+//       sort: { fields: [frontmatter___date], order: DESC }
+//       filter: {
+//         fields: {
+//           draft: { eq: false }
+//         }
+//       }
+//     ) {
+//       edges {
+//         node {
+//           excerpt
+//           fields {
+//             slug
+//           }
+//           frontmatter {
+//             date(formatString: "MMMM DD, YYYY")
+//             title
+//             description
+//           }
+//         }
+//       }
+//     }
+//   }
+// `
+
 export const pageQuery = graphql`
   query {
     site {
@@ -48,27 +81,5 @@ export const pageQuery = graphql`
         email
       }
     }
-    allMarkdownRemark(
-      sort: { fields: [frontmatter___date], order: DESC }
-      filter: {
-        fields: {
-          draft: { eq: false }
-        }
-      }
-    ) {
-      edges {
-        node {
-          excerpt
-          fields {
-            slug
-          }
-          frontmatter {
-            date(formatString: "MMMM DD, YYYY")
-            title
-            description
-          }
-        }
-      }
-    }
   }
-`
+`;

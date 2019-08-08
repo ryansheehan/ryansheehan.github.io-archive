@@ -1,4 +1,4 @@
 import {PageRendererProps} from 'gatsby';
-import { IPageQuery } from './page-query.interface';
+import { PageQuery } from './page-query.interface';
 
-export type PageProps = {data: IPageQuery} & PageRendererProps;
+export type PageProps<T={}> = {data: PageQuery<T>, uri: string, path: string} & PageRendererProps;

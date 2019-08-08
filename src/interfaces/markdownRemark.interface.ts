@@ -1,10 +1,9 @@
+import { PageProps } from './page-props.interface';
+
 export interface IMarkdownRemark {
   id: string;
   excerpt: string;
   html: string;
-  fields: {
-    slug: string;
-  };
   frontmatter: {
     date: string;
     title: string;
@@ -17,3 +16,5 @@ export interface IAllMarkdownRemark {
     node: IMarkdownRemark;
   }[];
 }
+
+export type MarkdownPageProps = PageProps<{markdownRemark: IMarkdownRemark}>;

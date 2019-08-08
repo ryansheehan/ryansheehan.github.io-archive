@@ -1,81 +1,44 @@
 import React from "react"
-import { Link, graphql, ReplaceComponentRendererArgs, PageRendererProps } from "gatsby"
+import { Link, graphql } from "gatsby"
+import { MarkdownPageProps } from '../interfaces/markdownRemark.interface';
+import { PageContext } from '../interfaces/context-props.interface';
 
-import Bio from "../components/bio/bio"
-import Layout from "../components/layout/layout"
-import SEO from "../components/seo/seo"
-import { rhythm, scale } from "../utils/typography"
-import { IMarkdownRemark } from '../interfaces/markdownRemark.interface';
-import { IPageQuery } from '../interfaces/page-query.interface';
-import { IBlogPostPageContext } from '../interfaces/blog-post.interface';
-
-interface Data extends IPageQuery {
-  markdownRemark: IMarkdownRemark;
+interface ISeriesLink {
+  link: string;
+  title: string;
 }
 
-type BlogPostTemplateProps = {data: Data}
-  & ReplaceComponentRendererArgs
-  & {pageContext: IBlogPostPageContext}
-  & PageRendererProps
+interface IBlogPostContext {
+  slug: string;
+  previous: ISeriesLink;
+  next: ISeriesLink;
+}
 
-class BlogPostTemplate extends React.Component<BlogPostTemplateProps> {
-  render() {
-    const post = this.props.data.markdownRemark
-    const siteTitle = this.props.data.site.siteMetadata.title
-    const { previous, next } = this.props.pageContext
+type BlogPostProps = MarkdownPageProps & PageContext<IBlogPostContext>;
 
-    return (
-      <Layout location={this.props.location} title={siteTitle}>
-        <SEO
-          title={post.frontmatter.title}
-          description={post.frontmatter.description || post.excerpt}
-        />
-        <h1>{post.frontmatter.title}</h1>
-        <p
-          style={{
-            ...scale(-1 / 5),
-            display: `block`,
-            marginBottom: rhythm(1),
-            marginTop: rhythm(-1),
-          }}
-        >
-          {post.frontmatter.date}
-        </p>
-        <div dangerouslySetInnerHTML={{ __html: post.html }} />
-        <hr
-          style={{
-            marginBottom: rhythm(1),
-          }}
-        />
-        <Bio />
+const BlogPostTemplate: React.FC<BlogPostProps> = ({ data, pageContext }) => {
+  const { html, frontmatter } = data.markdownRemark;
+  const { title, date } = frontmatter;
 
-        <ul
-          style={{
-            display: `flex`,
-            flexWrap: `wrap`,
-            justifyContent: `space-between`,
-            listStyle: `none`,
-            padding: 0,
-          }}
-        >
-          <li>
-            {previous && (
-              <Link to={previous.fields.slug} rel="prev">
-                ← {previous.frontmatter.title}
-              </Link>
-            )}
-          </li>
-          <li>
-            {next && (
-              <Link to={next.fields.slug} rel="next">
-                {next.frontmatter.title} →
-              </Link>
-            )}
-          </li>
-        </ul>
-      </Layout>
-    )
-  }
+  const {previous, next} = pageContext;
+
+  return (<>
+    <h1>title: {title}</h1>
+    <h5>date: {date}</h5>
+    <div dangerouslySetInnerHTML={{ __html: html }} />
+    <div>
+      <div>{
+        previous && (
+          <Link to={previous.link} rel="prev">← {previous.title}</Link>
+        )
+      }</div>
+      <div>{
+        next && (
+          <Link to={next.link} rel="next">{next.title} →</Link>
+        )
+      }</div>
+    </div>
+  </>);
 }
 
 export default BlogPostTemplate
