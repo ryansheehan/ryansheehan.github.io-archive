@@ -11,9 +11,9 @@ export interface IMarkdownRemark {
   }
 }
 
-export interface IAllMarkdownRemark {
+export interface IAllMarkdownRemark<T = {}> {
   edges: {
-    node: IMarkdownRemark;
+    node: IMarkdownRemark & T;
   }[];
 }
 

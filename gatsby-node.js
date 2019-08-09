@@ -95,7 +95,18 @@ exports.createPages = async ({ graphql, actions }) => {
     });
   });
 
-  // Todo: Create series pages
+  // get the path to the series template
+  const seriesTemplate = path.resolve('./src/templates/series-post.tsx');
+
+  // generate a main page for each series
+  seriesInfoRaw.edges.forEach(({node}) => {
+    const {slug} = node.fields;
+    createPage({
+      path: slug,
+      component: seriesTemplate,
+      context: { slug }
+    })
+  });  
 
   return null
 

@@ -41,7 +41,7 @@ const BlogPostTemplate: React.FC<BlogPostProps> = ({ data, pageContext }) => {
   </>);
 }
 
-export default BlogPostTemplate
+export default BlogPostTemplate;
 
 export const pageQuery = graphql`
   query BlogPostBySlug($slug: String!) {
@@ -62,4 +62,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;
