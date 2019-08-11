@@ -1,22 +1,51 @@
 import React from "react";
-import { useStaticQuery, graphql } from "gatsby"
+import { useStaticQuery, graphql, Link } from "gatsby"
+
+interface IStaticQueryResponse {
+  allMarkdownRemark: {
+    totalCount: number;
+    edges: {node: {
+      excerpt: string;
+      frontmatter: {
+        title: string;
+        description: string;
+      }
+      fields: {
+        slug: string;
+      }
+    }}[]
+  }
+}
 
 export const SeriesList = () => {
-  const data = useStaticQuery(graphql`
-    query HeaderQuery {
-      site {
-        siteMetadata {
-          title
+  const data = useStaticQuery<IStaticQueryResponse>(graphql`
+    query {
+      allMarkdownRemark(filter: {fields: {draft: {eq: false}, isSeriesMeta: {eq: true}}}) {
+        totalCount
+        edges {
+          node {
+            excerpt(pruneLength: 160)
+            frontmatter {
+              title
+              description
+            }
+            fields {
+              slug
+            }
+          }
         }
       }
     }
   `);
 
-  const {title} = data.site.siteMetadata;
+  const {totalCount, edges} = data.allMarkdownRemark;
   
-  return (
-    <div>
-      SeriesList Component {title} 
-    </div>
-  )
+  return (<>
+    <div>Series Count: {totalCount}</div>
+    <div>{
+      edges.map(edge => (<Link to={edge.node.fields.slug}>{
+        edge.node.frontmatter.title
+      }</Link>))
+    }</div>
+  </>)
 }
