@@ -45,7 +45,7 @@ export const LatestPosts: React.FC = () => {
   return (<>
     <div>Latest Posts</div>
     <div>{
-      edges.map(({node}) => (<Link to={node.fields.slug}>{node.frontmatter.title}</Link>))
+      edges.map(({node}) => (<Link key={node.fields.slug} to={`/${node.fields.slug}`}>{node.frontmatter.title}</Link>))
     }</div>
   </>)
 } 

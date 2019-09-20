@@ -43,7 +43,7 @@ export const SeriesList = () => {
   return (<>
     <div>Series Count: {totalCount}</div>
     <div>{
-      edges.map(edge => (<Link to={edge.node.fields.slug}>{
+      edges.map(edge => (<Link key={edge.node.fields.slug} to={`/${edge.node.fields.slug}`}>{
         edge.node.frontmatter.title
       }</Link>))
     }</div>
