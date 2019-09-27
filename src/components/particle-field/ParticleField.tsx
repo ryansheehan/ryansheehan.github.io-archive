@@ -35,10 +35,11 @@ export const ParticleField: React.FC<{}> = () => {
     let renderWorld = () => {console.log('null');};
     const canvasEl = canvasRef.current;
     if (canvasEl) {
-      const ctx = canvasEl.getContext('2d');
-      // const ctx = canvasEl.getContext('webgl');
+      // const ctx = canvasEl.getContext('2d');
+      const ctx = canvasEl.getContext('webgl');
       if (ctx) {
-        renderWorld = create2DRenderFunction(ctx, world);
+        // renderWorld = create2DRenderFunction(ctx, world);
+        renderWorld = create3DRenderFunction(ctx, world);
       }
     }
 
