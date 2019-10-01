@@ -52,8 +52,8 @@ export function create3DRenderFunction(ctx: WebGLRenderingContext, world: Partic
   const near = 0.1;
   const far = 400;
   const camera = new THREE.PerspectiveCamera(fov, width/height, near, far);
-  camera.translateX(width/2);
-  camera.translateY(height/2);
+  // camera.translateX(width/2);
+  // camera.translateY(height/2);
   camera.translateZ(depth);
   
   // setup 3d renderer
@@ -158,6 +158,7 @@ export function create3DRenderFunction(ctx: WebGLRenderingContext, world: Partic
   // create the model for all constellation lines as one giant model and add it to the scene
   const constellationLines = new THREE.LineSegments(lineGeometry, constellationMaterial);
   scene.add(constellationLines);
+
 
   // return our render function
   return function() {
