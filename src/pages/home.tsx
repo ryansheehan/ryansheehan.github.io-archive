@@ -5,10 +5,10 @@ import { ParticleField } from '../components/particle-field/ParticleField';
 
 const Home: React.FC<{}> = () => {
   return (
-    <div>
+    <div style={{display: 'flex', flexFlow: 'column', height: '100%'}}>
       <SeriesList></SeriesList>
       <LatestPosts></LatestPosts>
-      <div style={{display: 'flex', flexFlow: 'column', alignItems:'center'}}>
+      <div style={{display: 'flex', flexFlow: 'column', flex: '1 1 auto', backgroundColor: 'blue'}}>
         <ParticleField></ParticleField>
       </div>
     </div>

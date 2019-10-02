@@ -1,7 +1,7 @@
 import React from 'react';
 import { createMuiTheme } from '@material-ui/core';
 import { blueGrey } from '@material-ui/core/colors';
-import Helmet from 'react-helmet';
+import {Helmet} from 'react-helmet-async';
 
 export const theme = createMuiTheme({
   overrides: {
@@ -62,6 +62,11 @@ export const ThemeHelmet: React.FC = ({children}) =>
 <Helmet>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500|Roboto+Slab:400" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <style type="text/css">{`
+    html, body, #___gatsby, #gatsby-focus-wrapper {
+      height: 100%;
+    }
+  `}</style>
   {children}
 </Helmet>
 </>;
