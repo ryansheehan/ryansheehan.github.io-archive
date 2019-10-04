@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { ParticleWorld2d } from "./world";
-import {width, height, threshold_sq} from './constants';
+import {threshold_sq} from './constants';
+import { ISize } from '../../utils/types';
 
 const pointVertexShader = `
   attribute vec4 color;
@@ -41,25 +42,102 @@ const lineFragmentShader = `
   }
 `;
 
-export function create3DRenderFunction(ctx: WebGLRenderingContext, world: ParticleWorld2d) {
+export interface IParticleWorldCameraSettings extends Partial<ISize> {
+  width?: number,
+  height?: number,
+}
+
+export interface IParticleWorldCamera {
+  size: ISize;
+  camera: THREE.Camera;
+  updateSettings(settings: IParticleWorldCameraSettings): void;
+}
+
+export class ParticleWorldCamera implements IParticleWorldCamera {
+  private _width = 1;
+  private _height = 1;
+  public get size(): ISize {
+    return {width: this._width, height: this._height};
+  }
+  private get _aspect() {
+    return this._width / this._height;
+  }
+  private get _depth() {
+    return (this._width / 2) / Math.tan(this._fov_rad/2);
+  }
+  private _fov = 75;
+  private get _far() {
+    return this._depth + 100;
+  }
+  private get _fov_rad() {
+    return this._fov * Math.PI / 180;
+  }
+  private _near = 0.1;
+  private _camera: THREE.PerspectiveCamera | null  = null;
+  get camera(): THREE.Camera {
+    if (!this._camera) {
+      this._camera = new THREE.PerspectiveCamera(this._fov, this._aspect, this._near, this._far);
+      this._camera.translateZ(this._depth);
+    }
+    
+    return this._camera as THREE.PerspectiveCamera;
+  }
+
+  constructor(size: ISize) {
+    const {width, height} = size;
+    this._width = width;
+    this._height = height;
+  }
+
+  updateSettings(settings: IParticleWorldCameraSettings) {
+    const {width, height} = settings;
+    let settingsUpdated = false;
+    if (width && width != this._width) { 
+      this._width = width;
+      settingsUpdated = true; 
+    }
+    if (height && height != this._height) { 
+      this._height = height;
+      settingsUpdated = true; 
+    }
+    
+    if (this._camera && settingsUpdated) {
+      this._camera = null;
+    }
+  }
+}
+
+export interface IParticleWorldRenderer {
+  updateSize(size: ISize): void;
+  render(): void;
+}
+
+export class ParticleWorldRenderer {
+  constructor(private renderer: THREE.WebGLRenderer, private camera: ParticleWorldCamera, public render: () => void) {
+  }
+
+  updateSize(size: ISize) {
+    if (this.camera.size.width != size.width || this.camera.size.height != size.height) {
+      this.camera.updateSettings(size);
+      this.renderer.setSize(size.width, size.height);
+    } else {
+      console.log('Renderer size change ignored.  Values are the same.');
+    }
+  }
+}
+
+export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world: ParticleWorld2d) {
   const scene = new THREE.Scene();
 
-  const fov = 75;
-  const fov_rad = fov*Math.PI/180;
-  // calculate how far back the camera needs to be 
-  // give our fov and how big our simulated world is
-  const depth = (width / 2) / Math.tan(fov_rad/2);
-  const near = 0.1;
-  const far = 400;
-  const camera = new THREE.PerspectiveCamera(fov, width/height, near, far);
-  // camera.translateX(width/2);
-  // camera.translateY(height/2);
-  camera.translateZ(depth);
+  const {width, height} = world;
+  const size = {width, height};  
+  const camera = new ParticleWorldCamera(size); 
   
   // setup 3d renderer
   const renderer = new THREE.WebGLRenderer({context: ctx});
   // renderer.setPixelRatio( window.devicePixelRatio );
-  renderer.setSize(width, height);
+  console.log(`renderer thinks world is of size: [${world.width}, ${world.height}]`);
+  renderer.setSize(world.width, world.height);
   renderer.setClearColor(0x000000, 1);
 
   const starMaterial = new THREE.ShaderMaterial({
@@ -159,9 +237,15 @@ export function create3DRenderFunction(ctx: WebGLRenderingContext, world: Partic
   const constellationLines = new THREE.LineSegments(lineGeometry, constellationMaterial);
   scene.add(constellationLines);
 
+  // TEST CUBE
+  // var geometry = new THREE.BoxGeometry( 50, 50, 50 );
+  // var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+  // var cube = new THREE.Mesh( geometry, material );
+  // scene.add( cube );
 
-  // return our render function
-  return function() {
+
+  // render function
+  const renderFn = () => {
     // pull out the position attribute for the stars
     const starsGeo = starPoints.geometry as THREE.BufferGeometry;
     const starPosAttr = starsGeo.attributes['position'] as THREE.InterleavedBufferAttribute;
@@ -237,6 +321,8 @@ export function create3DRenderFunction(ctx: WebGLRenderingContext, world: Partic
     }
 
     // rerender the scene!
-    renderer.render(scene, camera);
+    renderer.render(scene, camera.camera);
   }
+
+  return new ParticleWorldRenderer(renderer, camera, renderFn);
 }

@@ -1,5 +1,3 @@
-export const height = 600;
-export const width = 600;
 export const pCount = 100
 export const minSpeedScale = 0.015;
 export const maxSpeedScale = 0.035;

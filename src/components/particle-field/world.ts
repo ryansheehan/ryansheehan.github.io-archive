@@ -1,5 +1,6 @@
 import { Vector2, insideLine, distToLine } from './vector2';
 import { IParticle } from './particle';
+import { ISize } from '../../utils/types';
 
 const right = new Vector2(1, 0);
 const down = new Vector2(0, -1);
@@ -11,16 +12,30 @@ export interface IWorld {
 }
 
 export class ParticleWorld2d {
-  public readonly min: Vector2;
-  public readonly max: Vector2;
+  private min = new Vector2(-1, 1);
+  private max = new Vector2(1, -1);
   
-  constructor(
-    public readonly width: number,
-    public readonly height: number,
-    public particles: IParticle[] = []) {
+  public get width() { return this.size.width; }
+  public get height() { return this.size.height; }
 
-    this.max = new Vector2(width / 2, -height / 2);
-    this.min = this.max.clone().mul(-1);
+  private size: ISize = {width: 1, height: 1};
+
+  constructor(
+    size: ISize,
+    public particles: IParticle[] = []) {
+    console.log('initializing world to size', size);
+    this.setSize(size);
+  }
+
+  setSize(size: ISize) {
+    if (this.size.width != size.width || this.size.height != size.height) {
+      this.size = size;
+      const {width, height} = size;
+      this.max = new Vector2(width / 2, -height / 2);
+      this.min = this.max.clone().mul(-1);
+    } else {
+      console.log('World size change ignored.  Values are the same.');
+    }
   }
 
   add(p: IParticle) {

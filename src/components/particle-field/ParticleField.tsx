@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import { ParticleWorld2d, IWorld } from './world';
 import { simulate } from './simulation';
 import { Particle } from './particle';
 import { Vector2 } from './vector2';
 
-import { width, height, minSpeedScale, maxSpeedScale, lerp, pCount } from './constants';
-import { create3DRenderFunction } from './render3d';
+import { minSpeedScale, maxSpeedScale, lerp, pCount } from './constants';
+import { create3DParticleWorldRenderer, ParticleWorldRenderer } from './render3d';
 import { useResizeObserver } from '../../utils/hooks';
 
-function generateParticles() {
+function generateParticles(width: number, height: number) {
   const rand = () => new Particle({
     pos: new Vector2(Math.random() * width - (width * 0.5), Math.random() * height - (height * 0.5)),
     dir: new Vector2(Math.random() * 2 - 1, Math.random() * 2 -1).normalize(),
@@ -28,25 +28,53 @@ function generateParticles() {
 
 export const ParticleField: React.FC<{}> = () => {
   const [canvasRef, size] = useResizeObserver<HTMLCanvasElement>(); // useRef<HTMLCanvasElement>(null);
-  const [world, setWorld] = useState<IWorld | null>(null);
-  // new ParticleWorld2d(width, height, generateParticles())
+  const [world, setWorld] = useState<ParticleWorld2d | null>(null);
+  const [renderer, setRenderer] = useState<ParticleWorldRenderer | null>(null);
 
   useEffect(() => {
-    // let renderWorld = () => {console.log('null');};
-    const canvasEl = canvasRef.current;
-    if (canvasEl) {
-      const ctx = canvasEl.getContext('webgl');
-      if (ctx) {
-
-        // renderWorld = create3DRenderFunction(ctx, world);
+    if (!world && !renderer && size.width !== 1 && size.height!==1) {
+      const canvasEl = canvasRef.current;
+      if(canvasEl) {
+        console.log('creating simulated world');
+        const w = new ParticleWorld2d(size, generateParticles(size.width, size.height));
+        // const w = new ParticleWorld2d(size, generateParticles(500, 500));
+        setWorld(w);
+  
+        const ctx = canvasEl.getContext('webgl');
+        if (ctx) {
+          console.log('creating world renderer');
+          const r = create3DParticleWorldRenderer(ctx, w);
+          setRenderer(r);
+        }
       }
     }
+  }, [canvasRef, size]);
 
-    // const stopSimulationFn = simulate(world, renderWorld);
-    // return () => stopSimulationFn();
-  }, [canvasRef])
+  useEffect(() => {
+    if (world && renderer) {
+      console.log('starting simulation');
+      const stopSimulationFn = simulate<IWorld>(world, renderer.render);
+      return () => {
+        console.log('stopping simulation');
+        stopSimulationFn();
+      };
+    }
+  }, [world, renderer]);
+
+  useEffect(() => {
+    if (world) {
+      console.log('updating world size', size);
+      world.setSize(size);
+    }
+
+    if (renderer) {
+      console.log('updating renderer size', size);
+      renderer.updateSize(size);
+    }
+  }, [size]);
 
   return (
-    <canvas ref={canvasRef} style={{flex: '1 1 auto'}}></canvas>
+    // <canvas ref={canvasRef} style={{flex: '1 1 auto'}}></canvas>
+    <canvas ref={canvasRef} width={size.width} height={size.height} style={{flex: `1 1 auto`}}></canvas>
   )
 }
