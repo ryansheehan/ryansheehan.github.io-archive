@@ -6,19 +6,22 @@ import { simulate } from './simulation';
 import { Particle } from './particle';
 import { Vector2 } from './vector2';
 
-import { minSpeedScale, maxSpeedScale, lerp, pCount } from './constants';
 import { create3DParticleWorldRenderer, ParticleWorldRenderer } from './render3d';
 import { useResizeObserver } from '../../utils/hooks';
 
-function generateParticles(width: number, height: number) {
+
+function lerp(a: number, b: number, t: number) {
+  return a * (1-t) + b * t;
+}
+
+function generateParticles(width: number, height: number, count: number, speed: [number, number]) {
   const rand = () => new Particle({
     pos: new Vector2(Math.random() * width - (width * 0.5), Math.random() * height - (height * 0.5)),
     dir: new Vector2(Math.random() * 2 - 1, Math.random() * 2 -1).normalize(),
-    spd: lerp(minSpeedScale, maxSpeedScale, Math.random()) * width
+    spd: lerp(speed[0], speed[1], Math.random()) * width
   });
 
   const collection = [];
-  const count = pCount;
   for(let i = 0; i < count; i++) {
     collection.push(rand());
   }
@@ -36,7 +39,7 @@ export const ParticleField: React.FC<{}> = () => {
       const canvasEl = canvasRef.current;
       if(canvasEl) {
         console.log('creating simulated world');
-        const w = new ParticleWorld2d(size, generateParticles(size.width, size.height));
+        const w = new ParticleWorld2d(size, generateParticles(size.width, size.height, 100, [0.015, 0.035]));
         // const w = new ParticleWorld2d(size, generateParticles(500, 500));
         setWorld(w);
   

@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { ParticleWorld2d } from "./world";
-import {threshold_sq} from './constants';
 import { ISize } from '../../utils/types';
 
 const pointVertexShader = `
@@ -270,6 +269,9 @@ export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world:
     
     // this is the tracking of what lines actually need drawing
     const indices: number[] = [];
+
+    const closeness_threshold = 60 / 500 * world.width;
+    const threshold_sq = closeness_threshold * closeness_threshold;
 
     // for each particle test its distance against every other particle
     for(let i = 0; i < world.particles.length; ++i) {
