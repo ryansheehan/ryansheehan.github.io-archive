@@ -43,7 +43,6 @@ export class ParticleWorld2d {
   }
 
   update(dt: number) {
-    // update positions, and check bounds;
     for(let i = 0; i < this.particles.length; ++i) {
       this.particles[i].update(dt);
       this.forceInBounds(this.particles[i]);

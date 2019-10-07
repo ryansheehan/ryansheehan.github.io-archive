@@ -30,7 +30,7 @@ function generateParticles(width: number, height: number, count: number, speed: 
 }
 
 export const ParticleField: React.FC<{}> = () => {
-  const [canvasRef, size] = useResizeObserver<HTMLCanvasElement>(); // useRef<HTMLCanvasElement>(null);
+  const [canvasRef, size] = useResizeObserver<HTMLCanvasElement>();
   const [world, setWorld] = useState<ParticleWorld2d | null>(null);
   const [renderer, setRenderer] = useState<ParticleWorldRenderer | null>(null);
 
@@ -40,7 +40,6 @@ export const ParticleField: React.FC<{}> = () => {
       if(canvasEl) {
         console.log('creating simulated world');
         const w = new ParticleWorld2d(size, generateParticles(size.width, size.height, 100, [0.015, 0.035]));
-        // const w = new ParticleWorld2d(size, generateParticles(500, 500));
         setWorld(w);
   
         const ctx = canvasEl.getContext('webgl');
@@ -77,7 +76,8 @@ export const ParticleField: React.FC<{}> = () => {
   }, [size]);
 
   return (
-    // <canvas ref={canvasRef} style={{flex: '1 1 auto'}}></canvas>
-    <canvas ref={canvasRef} width={size.width} height={size.height} style={{flex: `1 1 auto`}}></canvas>
+    <>
+      <canvas ref={canvasRef} width={size.width} height={size.height} style={{flex: `1 1 auto`}}></canvas>
+    </>
   )
 }

@@ -62,21 +62,22 @@ export class ParticleWorldCamera implements IParticleWorldCamera {
     return this._width / this._height;
   }
   private get _depth() {
-    return (this._width / 2) / Math.tan(this._fov_rad/2);
+    return (this._width / 2.0) / Math.tan(this._fov_rad/2.0);
   }
-  private _fov = 75;
+  private _fov = 45.0;
   private get _far() {
-    return this._depth + 100;
+    return this._depth + 100.0;
   }
   private get _fov_rad() {
-    return this._fov * Math.PI / 180;
+    return this._fov * Math.PI / 180.0;
   }
   private _near = 0.1;
   private _camera: THREE.PerspectiveCamera | null  = null;
   get camera(): THREE.Camera {
     if (!this._camera) {
+      console.log(`depth: ${this._depth}\nwidth: ${this._width}\nheight: ${this._height}`);
       this._camera = new THREE.PerspectiveCamera(this._fov, this._aspect, this._near, this._far);
-      this._camera.translateZ(this._depth);
+      this._camera.translateZ(this._depth / this._aspect);
     }
     
     return this._camera as THREE.PerspectiveCamera;
@@ -118,14 +119,14 @@ export class ParticleWorldRenderer {
   updateSize(size: ISize) {
     if (this.camera.size.width != size.width || this.camera.size.height != size.height) {
       this.camera.updateSettings(size);
-      this.renderer.setSize(size.width, size.height);
+      this.renderer.setViewport(0, 0, size.width, size.height);
     } else {
       console.log('Renderer size change ignored.  Values are the same.');
     }
   }
 }
 
-export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world: ParticleWorld2d) {
+export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world: ParticleWorld2d, debug: (msg: string) => void = ()=>{}) {
   const scene = new THREE.Scene();
 
   const {width, height} = world;
@@ -237,14 +238,21 @@ export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world:
   scene.add(constellationLines);
 
   // TEST CUBE
-  // var geometry = new THREE.BoxGeometry( 50, 50, 50 );
+  // var geometry = new THREE.BoxGeometry( 10, 10, 10 );
   // var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+  // geometry.translate(-width / 2, height / 2, 0);
   // var cube = new THREE.Mesh( geometry, material );
   // scene.add( cube );
 
+  // we need to track each vert that gets used in the constellation
+  // so that we do not reuse it for color modifications
+  const offsets = new Array<number>(numParticles);
 
   // render function
   const renderFn = () => {
+    // clear the offset values for the rendering pass
+    offsets.fill(0);
+
     // pull out the position attribute for the stars
     const starsGeo = starPoints.geometry as THREE.BufferGeometry;
     const starPosAttr = starsGeo.attributes['position'] as THREE.InterleavedBufferAttribute;
@@ -262,15 +270,11 @@ export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world:
     }
     // let THREEjs know position data updated, otherwise the render data will not be updated
     starPosAttr.data.needsUpdate = true;
-
-    // we need to track each vert that gets used in the constellation
-    // so that we do not reuse it for color modifications
-    const offsets = new Array<number>(numParticles).fill(0);
     
     // this is the tracking of what lines actually need drawing
     const indices: number[] = [];
 
-    const closeness_threshold = 60 / 500 * world.width;
+    const closeness_threshold = 70 / 500 * world.width;
     const threshold_sq = closeness_threshold * closeness_threshold;
 
     // for each particle test its distance against every other particle
