@@ -126,7 +126,7 @@ export class ParticleWorldRenderer {
   }
 }
 
-export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world: ParticleWorld2d, debug: (msg: string) => void = ()=>{}) {
+export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world: ParticleWorld2d) {
   const scene = new THREE.Scene();
 
   const {width, height} = world;
