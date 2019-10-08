@@ -18,7 +18,7 @@ function generateParticles(width: number, height: number, count: number, speed: 
   const rand = () => new Particle({
     pos: new Vector2(Math.random() * width - (width * 0.5), Math.random() * height - (height * 0.5)),
     dir: new Vector2(Math.random() * 2 - 1, Math.random() * 2 -1).normalize(),
-    spd: lerp(speed[0], speed[1], Math.random()) * width
+    spd: lerp(speed[0], speed[1], Math.random())
   });
 
   const collection = [];

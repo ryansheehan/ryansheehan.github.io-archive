@@ -9,7 +9,7 @@ export interface IParticleProps {
 export interface IParticle extends IParticleProps {
   
 
-  update(dt: number): void;
+  update(dt: number, speedScale: number): void;
 }
 
 
@@ -25,7 +25,7 @@ export class Particle implements IParticle {
     this.spd = spd;
   }
 
-  update(dt: number) {
-    this.pos.add(this.dir.clone().mul(this.spd * dt));
+  update(dt: number, speedScale: number) {
+    this.pos.add(this.dir.clone().mul(this.spd * speedScale * dt));
   }
 }
