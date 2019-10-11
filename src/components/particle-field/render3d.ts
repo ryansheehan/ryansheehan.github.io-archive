@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { EffectComposer, BloomEffect, RenderPass, EffectPass, SMAAEffect } from 'postprocessing';
 import { ParticleWorld2d } from "./world";
 import { ISize } from '../../utils/types';
+import { Vector3 } from 'three';
 
 const pointVertexShader = `
   attribute vec4 color;
@@ -67,7 +68,7 @@ export class ParticleWorldCamera implements IParticleWorldCamera {
   }
   private _fov = 45.0;
   private get _far() {
-    return this._depth + 100.0;
+    return this._depth + 1000.0;
   }
   private get _fov_rad() {
     return this._fov * Math.PI / 180.0;
@@ -76,7 +77,6 @@ export class ParticleWorldCamera implements IParticleWorldCamera {
   private _camera: THREE.PerspectiveCamera | null  = null;
   get camera(): THREE.Camera {
     if (!this._camera) {
-      console.log(`depth: ${this._depth}\nwidth: ${this._width}\nheight: ${this._height}`);
       this._camera = new THREE.PerspectiveCamera(this._fov, this._aspect, this._near, this._far);
       this._camera.translateZ(this._depth / this._aspect);
     }
@@ -94,20 +94,24 @@ export class ParticleWorldCamera implements IParticleWorldCamera {
     const {width, height} = settings;
     let settingsUpdated = false;
     if (width && width != this._width) { 
+      console.log('width updated', width);
       this._width = width;
       settingsUpdated = true; 
     }
     if (height && height != this._height) { 
+      console.log('height updated', height);
       this._height = height;
       settingsUpdated = true; 
     }
     
     if (this._camera && settingsUpdated) {
-      this._camera = null;
-      // this._camera.aspect = this._aspect;
-      // this._camera.far = this._far;
-      // this._camera.updateProjectionMatrix();
-      // this._camera.translateZ(this._depth / this._aspect);
+      console.log(`depth: ${this._depth}\nwidth: ${this._width}\nheight: ${this._height}`);
+
+      // this._camera = null;
+      this._camera.aspect = this._aspect;
+      this._camera.far = this._far;
+      this._camera.updateProjectionMatrix();
+      this._camera.position.set(0, 0, this._depth / this._aspect);
     }
   }
 }
@@ -132,6 +136,14 @@ export class ParticleWorldRenderer {
       console.log('Renderer size change ignored.  Values are the same.');
     }
   }
+}
+
+export function getColor() {
+  return [
+    Math.random() * 255,
+    Math.random() * 255,
+    Math.random() * 255,
+  ]
 }
 
 export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world: ParticleWorld2d) {
@@ -191,9 +203,10 @@ export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world:
     // we need to recalculate the offset for the color component
     const j = (i + 3) * 4
 
-    starColInterleaved[j] = Math.floor(Math.random() * 255); // 127; // red
-    starColInterleaved[j+1] = Math.floor(Math.random() * 255); // 255; // green
-    starColInterleaved[j+2] = Math.floor(Math.random() * 255); // 212; // blue
+    const [r,g,b] = getColor();
+    starColInterleaved[j] = r; // 127; // red
+    starColInterleaved[j+1] = g; // 255; // green
+    starColInterleaved[j+2] = b; // 212; // blue
     starColInterleaved[j+3] = 255; // alpha
   }
 
@@ -252,7 +265,7 @@ export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world:
   // var cube = new THREE.Mesh( geometry, material );
   // scene.add( cube );
   
-  // const composer = new EffectComposer(renderer);
+  const composer = new EffectComposer(renderer);
   // const assets = new Map<string, HTMLImageElement>();
   // const searchImage = new Image();
   // searchImage.addEventListener('load', function() {
@@ -270,17 +283,20 @@ export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world:
 
   // const smaaEffect = new SMAAEffect(assets.get('smaa-search'), assets.get('smaa-area'));
   
-  // const bloomEffect = new BloomEffect({
-  //   luminanceThreshold: 0.01,
-  //   luminanceSmoothing: 0.0005,
-  // });
-  // const renderPass = new RenderPass(scene, camera.camera);
-  // const effectPass = new EffectPass(camera.camera, bloomEffect);
+  const bloomEffect = new BloomEffect({
+    luminanceThreshold: 0.01,
+    luminanceSmoothing: 0.0005,
+  });
+  const renderPass = new RenderPass(scene, camera.camera);
+  const effectPass = new EffectPass(
+    camera.camera,
+    bloomEffect,
+  );
 
-  // effectPass.renderToScreen = true;
+  effectPass.renderToScreen = true;
 
-  // composer.addPass(renderPass);
-  // composer.addPass(effectPass);
+  composer.addPass(renderPass);
+  composer.addPass(effectPass);
 
 
   // we need to track each vert that gets used in the constellation
@@ -313,7 +329,7 @@ export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world:
     // this is the tracking of what lines actually need drawing
     const indices: number[] = [];
 
-    const closeness_threshold = 0.1 * Math.max(world.width, world.height);
+    const closeness_threshold = 0.175 * Math.min(world.width, world.height);
     const threshold_sq = closeness_threshold * closeness_threshold;
 
     // for each particle test its distance against every other particle
@@ -366,10 +382,10 @@ export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world:
     }
 
     // rerender the scene!
-    renderer.render(scene, camera.camera);
-    // composer.render(dt)
+    // renderer.render(scene, camera.camera);
+    composer.render(dt)
   }
 
-  // return new ParticleWorldRenderer(renderer, composer, camera, renderFn);
-  return new ParticleWorldRenderer(renderer, null, camera, renderFn);
+  return new ParticleWorldRenderer(renderer, composer, camera, renderFn);
+  // return new ParticleWorldRenderer(renderer, null, camera, renderFn);
 }
