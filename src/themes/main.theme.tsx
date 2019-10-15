@@ -63,8 +63,17 @@ export const ThemeHelmet: React.FC = ({children}) =>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500|Roboto+Slab:400" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   <style type="text/css">{`
-    html, body, #___gatsby, #gatsby-focus-wrapper {
-      height: 100%;
+    html, body {
+      height: 100vh;
+    }
+
+    body {
+      display: flex;
+    }
+
+    #___gatsby, #gatsby-focus-wrapper {
+      display: flex;
+      flex: 1 1 auto;
     }
   `}</style>
   {children}

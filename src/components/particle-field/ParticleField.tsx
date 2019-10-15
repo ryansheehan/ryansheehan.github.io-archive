@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 import { ParticleWorld2d, IWorld } from './world';
 import { simulate } from './simulation';
-import { Particle } from './particle';
+import { Particle, IParticle } from './particle';
 import { Vector2 } from './vector2';
 
 import { create3DParticleWorldRenderer, ParticleWorldRenderer } from './render3d';
@@ -29,7 +29,23 @@ function generateParticles(width: number, height: number, count: number, speed: 
   return collection;
 }
 
-export const ParticleField: React.FC<{}> = () => {
+function defaultColorFn() {
+  return [
+    Math.random() * 255,
+    Math.random() * 255,
+    Math.random() * 255,
+  ];
+}
+
+export interface IParticleFieldProps {
+  backgroundColor?: number;
+  count?: number;
+  speed?: [number, number];
+  colorFn?: (particle?: IParticle, index?: number, particles?: IParticle[]) => number[];
+  closenessFn?: (w: ParticleWorld2d) => number;
+}
+
+export const ParticleField: React.FC<IParticleFieldProps> = ({backgroundColor = 0x000000, count = 100, speed = [0.015, 0.035], colorFn = defaultColorFn, closenessFn}) => {
   const [canvasRef, size] = useResizeObserver<HTMLCanvasElement>();
   const [world, setWorld] = useState<ParticleWorld2d | null>(null);
   const [renderer, setRenderer] = useState<ParticleWorldRenderer | null>(null);
@@ -39,13 +55,13 @@ export const ParticleField: React.FC<{}> = () => {
       const canvasEl = canvasRef.current;
       if(canvasEl) {
         console.log('creating simulated world');
-        const w = new ParticleWorld2d(size, generateParticles(size.width, size.height, 100, [0.015, 0.035]));
+        const w = new ParticleWorld2d(size, generateParticles(size.width, size.height, count, speed));
         setWorld(w);
   
         const ctx = canvasEl.getContext('webgl');
         if (ctx) {
           console.log('creating world renderer');
-          const r = create3DParticleWorldRenderer(ctx, w);
+          const r = create3DParticleWorldRenderer(ctx, w, {backgroundColor, colorFn, closenessFn});
           setRenderer(r);
         }
       }
@@ -55,7 +71,7 @@ export const ParticleField: React.FC<{}> = () => {
   useEffect(() => {
     if (world && renderer) {
       console.log('starting simulation');
-      const stopSimulationFn = simulate<IWorld>(world, renderer.render);
+      const stopSimulationFn = simulate<IWorld>(world, renderer.renderFn);
       return () => {
         console.log('stopping simulation');
         stopSimulationFn();

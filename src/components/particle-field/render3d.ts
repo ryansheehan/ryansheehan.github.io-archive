@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import { EffectComposer, BloomEffect, RenderPass, EffectPass, SMAAEffect } from 'postprocessing';
+import { EffectComposer, BloomEffect, RenderPass, EffectPass } from 'postprocessing';
 import { ParticleWorld2d } from "./world";
 import { ISize } from '../../utils/types';
-import { Vector3 } from 'three';
+import { IParticle } from './particle';
 
 const pointVertexShader = `
   attribute vec4 color;
@@ -122,7 +122,7 @@ export interface IParticleWorldRenderer {
 }
 
 export class ParticleWorldRenderer {
-  constructor(private renderer: THREE.WebGLRenderer, private composer: EffectComposer | null, private camera: ParticleWorldCamera, public render: (w: any, dt: number) => void) {
+  constructor(private renderer: THREE.WebGLRenderer, private composer: EffectComposer | null, private camera: ParticleWorldCamera, public renderFn: (w: any, dt: number) => void) {
   }
 
   updateSize(size: ISize) {
@@ -138,15 +138,14 @@ export class ParticleWorldRenderer {
   }
 }
 
-export function getColor() {
-  return [
-    Math.random() * 255,
-    Math.random() * 255,
-    Math.random() * 255,
-  ]
+export interface create3DParticleWorldRendererOpts {
+  backgroundColor: number;
+  colorFn: (particle?: IParticle, index?: number, particles?: IParticle[]) => number[];
+  closenessFn?: (world: ParticleWorld2d) => number;
 }
 
-export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world: ParticleWorld2d) {
+export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world: ParticleWorld2d, opts: create3DParticleWorldRendererOpts) {
+  const {backgroundColor, colorFn, closenessFn = () => 0.175 * Math.min(world.width, world.height)} = opts;
   const scene = new THREE.Scene();
 
   const {width, height} = world;
@@ -158,7 +157,7 @@ export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world:
   // renderer.setPixelRatio( window.devicePixelRatio );
   console.log(`renderer thinks world is of size: [${world.width}, ${world.height}]`);
   renderer.setSize(world.width, world.height);
-  renderer.setClearColor(0x000000, 1);
+  renderer.setClearColor(backgroundColor, 1);
 
   const starMaterial = new THREE.ShaderMaterial({
     vertexShader: pointVertexShader,
@@ -192,7 +191,8 @@ export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world:
 
   // initialize the star positions and colors
   for(let i = 0; i < starPosInterleaved.length; i+=4) {
-    const particle = particles[i / 4];
+    const particleIndex = i / 4;
+    const particle = particles[particleIndex];
 
     // set the position x,y,z
     starPosInterleaved[i] = particle.pos.x;
@@ -203,7 +203,7 @@ export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world:
     // we need to recalculate the offset for the color component
     const j = (i + 3) * 4
 
-    const [r,g,b] = getColor();
+    const [r,g,b] = colorFn(particle, particleIndex, particles);
     starColInterleaved[j] = r; // 127; // red
     starColInterleaved[j+1] = g; // 255; // green
     starColInterleaved[j+2] = b; // 212; // blue
@@ -276,7 +276,7 @@ export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world:
   // const areaImage = new Image();
   // areaImage.addEventListener('load', function() {
   //   assets.set('smaa-area', this);
-  // });
+  // });backgroundColer
   // areaImage.src = SMAAEffect.areaImageDataURL;
 
 
@@ -329,7 +329,7 @@ export function create3DParticleWorldRenderer(ctx: WebGLRenderingContext, world:
     // this is the tracking of what lines actually need drawing
     const indices: number[] = [];
 
-    const closeness_threshold = 0.175 * Math.min(world.width, world.height);
+    const closeness_threshold = closenessFn(world);
     const threshold_sq = closeness_threshold * closeness_threshold;
 
     // for each particle test its distance against every other particle

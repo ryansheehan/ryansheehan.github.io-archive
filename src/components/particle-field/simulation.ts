@@ -1,7 +1,7 @@
 import { IWorld } from "./world";
 
 
-export function simulate<T extends IWorld>(world: T, renderCallback: (world?: T, dt?: number)=>void) {
+export function simulate<T extends IWorld>(world: T, renderCallback: (world: T, dt: number)=>void) {
   let animFrame: number;
   const startTime = performance.now();
   let lastTime = startTime;

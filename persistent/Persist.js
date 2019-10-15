@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import {theme, ThemeHelmet} from '../src/themes/main.theme';
 
 const Persist = ({children}) =>
-<div style={{height: '100%'}}>
+<div style={{display: 'flex', flex: '1 1 auto'}}>
   <CssBaseline/>
   <ThemeHelmet />
   <ThemeProvider theme={theme}>
